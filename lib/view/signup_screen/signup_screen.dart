@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:uri_launching/utilis/color_constant/color_constant.dart';
-import 'package:uri_launching/view/authorization_screen/authorization_screen.dart';
+//import 'package:uri_launching/view/authorization_screen/authorization_screen.dart';
+import 'package:http/http.dart' as http;
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -10,6 +13,38 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  TextEditingController firstnamecontroller = TextEditingController();
+  TextEditingController lastnamecontroller = TextEditingController();
+  TextEditingController phnumbercontroller = TextEditingController();
+  TextEditingController mailidcontroller = TextEditingController();
+
+  Future<void> insertrecord() async {
+    if (firstnamecontroller.text != "" ||
+        lastnamecontroller.text != "" ||
+        phnumbercontroller.text != "" ||
+        mailidcontroller.text != "") {
+      try {
+        String uri = "https://cybot.avanzosolutions.in/cybot/insert_record.php";
+        var res = await http.post(Uri.parse(uri), body: {
+          "firstnamecontroller": firstnamecontroller.text,
+          "lastnamecontroller": lastnamecontroller.text,
+          "phnumbercontroller": phnumbercontroller.text,
+          "mailidcontroller": mailidcontroller.text,
+        });
+        var response = jsonDecode(res.body);
+        if (response["success"] == "true") {
+          print("Record inserted");
+        } else {
+          print("some issue");
+        }
+      } catch (e) {
+        print(e);
+      }
+    } else {
+      print("please fill all fields");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,6 +73,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             Padding(
               padding: const EdgeInsets.all(12),
               child: TextFormField(
+                controller: firstnamecontroller,
                 decoration: InputDecoration(
                     hintText: "First name", border: OutlineInputBorder()),
               ),
@@ -45,6 +81,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             Padding(
               padding: const EdgeInsets.all(12),
               child: TextFormField(
+                controller: lastnamecontroller,
                 decoration: InputDecoration(
                     hintText: "Last Name", border: OutlineInputBorder()),
               ),
@@ -52,6 +89,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             Padding(
               padding: const EdgeInsets.all(12),
               child: TextFormField(
+                controller: phnumbercontroller,
                 decoration: InputDecoration(
                     hintText: "Phone Number", border: OutlineInputBorder()),
               ),
@@ -59,6 +97,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             Padding(
               padding: const EdgeInsets.all(12),
               child: TextFormField(
+                controller: mailidcontroller,
                 decoration: InputDecoration(
                     hintText: "Email Id", border: OutlineInputBorder()),
               ),
@@ -69,10 +108,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     backgroundColor:
                         MaterialStateProperty.all(Colorconstant.darkpurple)),
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AuthorizationScreen()));
+                  insertrecord();
                 },
                 child: Text(
                   "Next",
