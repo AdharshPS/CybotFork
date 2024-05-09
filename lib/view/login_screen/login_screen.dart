@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:uri_launching/utilis/Authentication.dart';
 import 'package:uri_launching/utilis/color_constant/color_constant.dart';
 import 'package:uri_launching/view/dashborad_screen/dashboard_screen.dart';
 import 'package:uri_launching/view/signup_screen/signup_screen.dart';
+import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,6 +15,32 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController loginusernamecontroller = TextEditingController();
+  TextEditingController loginpasswordcontroller = TextEditingController();
+  Future<void> insertrecord() async {
+    if (loginusernamecontroller.text != "" ||
+        loginpasswordcontroller.text != "") {
+      try {
+        String uri =
+            "https://cybot.avanzosolutions.in/cybot/insert_recordtest.php";
+        var res = await http.post(Uri.parse(uri), body: {
+          "loginusernamecontroller": loginusernamecontroller.text,
+          "loginpasswordcontroller": loginpasswordcontroller.text
+        });
+        var response = jsonDecode(res.body);
+        if (response["success"] == "true") {
+          print("Record inserted");
+        } else {
+          print("some issue");
+        }
+      } catch (e) {
+        print(e);
+      }
+    } else {
+      print("please fill all fields");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Padding(
               padding: const EdgeInsets.all(12),
               child: TextFormField(
+                controller: loginusernamecontroller,
                 decoration: InputDecoration(
                     hintText: "User Name", border: OutlineInputBorder()),
               ),
@@ -50,6 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Padding(
               padding: const EdgeInsets.all(12),
               child: TextFormField(
+                controller: loginpasswordcontroller,
                 decoration: InputDecoration(
                     hintText: "Password", border: OutlineInputBorder()),
               ),
@@ -65,6 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     backgroundColor:
                         MaterialStateProperty.all(Colorconstant.darkpurple)),
                 onPressed: () {
+                  insertrecord();
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -73,7 +105,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Text(
                   "Sign In",
                   style: TextStyle(
-                      fontSize: 20, color: Colorconstant.pantonebackground),
+                      fontSize: 20,
+                      color: const Color.fromARGB(255, 43, 34, 51)),
                 )),
             SizedBox(
               height: 5,

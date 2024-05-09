@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:uri_launching/utilis/color_constant/color_constant.dart';
 //import 'package:uri_launching/view/authorization_screen/authorization_screen.dart';
 import 'package:http/http.dart' as http;
-import 'package:uri_launching/view/dashborad_screen/dashboard_screen.dart';
+//import 'package:uri_launching/view/dashborad_screen/dashboard_screen.dart';
+//import 'package:uri_launching/view/login_screen/login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -20,6 +21,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController mailidcontroller = TextEditingController();
   TextEditingController usernamecontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
+  final _formkey = GlobalKey<FormState>();
+
+  String? validateEmail(String? email) {
+    RegExp emailRegex = RegExp(
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+    final isEmailvalid = emailRegex.hasMatch(email ?? '');
+    if (!isEmailvalid) {
+      return 'Please enter a valid email';
+    }
+    return null;
+  }
 
   Future<void> insertrecord() async {
     if (firstnamecontroller.text != "" ||
@@ -58,140 +70,126 @@ class _SignUpScreenState extends State<SignUpScreen> {
       backgroundColor: Colorconstant.pantonebackground,
       appBar: AppBar(
         backgroundColor: Colorconstant.pantonemessage,
-        actions: [Text("Version 1.0.0")],
+        actions: [const Text("Version 1.0.0")],
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Image.asset(
-              "assets/images/Animation - 1715055684151.gif",
-              height: 70,
-            ),
-            Text(
-              "Sign Up",
-              style: TextStyle(
-                  color: Colorconstant.darkpurple,
-                  fontWeight: FontWeight.w900,
-                  fontSize: 40),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 30, right: 30, bottom: 15),
-              child: SizedBox(
-                height: 52,
-                width: 250,
+        child: Form(
+          key: _formkey,
+          child: Column(
+            children: [
+              // Image.asset(
+              //   "assets/images/Animation - 1715055684151.gif",
+              //   height: 70,
+              // ),
+              SizedBox(
+                height: 10,
+              ),
+              const Text(
+                "Sign Up",
+                style: TextStyle(
+                    color: Colorconstant.darkpurple,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 40),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
                 child: TextFormField(
                   controller: firstnamecontroller,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       hintText: "First name", border: OutlineInputBorder()),
+                  validator: (name) => name!.length < 3
+                      ? "name should be atleast 5 characters"
+                      : null,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 30, right: 30, bottom: 15),
-              child: SizedBox(
-                height: 52,
-                width: 250,
+              Padding(
+                padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
                 child: TextFormField(
                   controller: lastnamecontroller,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       hintText: "Last Name", border: OutlineInputBorder()),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 30, right: 30, bottom: 15),
-              child: SizedBox(
-                height: 52,
-                width: 250,
+              Padding(
+                padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
                 child: TextFormField(
                   controller: phnumbercontroller,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       hintText: "Phone Number", border: OutlineInputBorder()),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 30, right: 30, bottom: 15),
-              child: SizedBox(
-                height: 52,
-                width: 250,
+              Padding(
+                padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
                 child: TextFormField(
                   controller: mailidcontroller,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       hintText: "Email Id", border: OutlineInputBorder()),
+                  validator: validateEmail,
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 30, right: 30, bottom: 15),
-              child: SizedBox(
-                height: 52,
-                width: 250,
+              Padding(
+                padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
                 child: TextFormField(
                   controller: usernamecontroller,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       hintText: "User Name", border: OutlineInputBorder()),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 30, right: 30, bottom: 15),
-              child: SizedBox(
-                height: 52,
-                width: 250,
+              Padding(
+                padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
                 child: TextFormField(
                   controller: passwordcontroller,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       hintText: "Enter Password", border: OutlineInputBorder()),
                 ),
               ),
-            ),
-            // Padding(
-            //   padding: const EdgeInsets.all(12),
-            //   child: TextFormField(
-            //     decoration: InputDecoration(
-            //         hintText: "Confirm Pssword", border: OutlineInputBorder()),
-            //   ),
-            // ),
-            SizedBox(
-              height: 15,
-            ),
-            ElevatedButton(
-                style: ButtonStyle(
-                    fixedSize: MaterialStateProperty.all(Size(330, 50)),
-                    backgroundColor:
-                        MaterialStateProperty.all(Colorconstant.darkpurple)),
-                onPressed: () {
-                  insertrecord();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DashboardScreen()));
-                },
-                child: Text(
-                  "Submit",
-                  style: TextStyle(
-                      fontSize: 20, color: Colorconstant.pantonebackground),
-                )),
-            SizedBox(
-              height: 53,
-            ),
-            Container(
-              color: Colorconstant.mainblack,
-              height: 50,
-              width: double.infinity,
-              child: Center(
-                child: Text(
-                  "Developed by Avanzo Cyber Security Solutions",
-                  style:
-                      TextStyle(fontSize: 10, color: Colorconstant.mainwhite),
-                ),
+              // Padding(
+              //   padding: const EdgeInsets.all(12),
+              //   child: TextFormField(
+              //     decoration: InputDecoration(
+              //         hintText: "Confirm Pssword", border: OutlineInputBorder()),
+              //   ),
+              // ),
+              const SizedBox(
+                height: 24,
               ),
-            )
-          ],
+              ElevatedButton(
+                  style: ButtonStyle(
+                      fixedSize: MaterialStateProperty.all(const Size(330, 50)),
+                      backgroundColor:
+                          MaterialStateProperty.all(Colorconstant.darkpurple)),
+                  onPressed: () {
+                    insertrecord();
+                    _formkey.currentState!.validate();
+                    // mailidcontroller.clear();
+                    // firstnamecontroller.clear();
+                  },
+                  child: const Text(
+                    "Submit",
+                    style: TextStyle(
+                        fontSize: 20, color: Colorconstant.pantonebackground),
+                  )),
+              const SizedBox(
+                height: 53,
+              ),
+              Container(
+                color: Colorconstant.mainblack,
+                height: 50,
+                width: double.infinity,
+                child: const Center(
+                  child: Text(
+                    "Developed by Avanzo Cyber Security Solutions",
+                    style:
+                        TextStyle(fontSize: 10, color: Colorconstant.mainwhite),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
