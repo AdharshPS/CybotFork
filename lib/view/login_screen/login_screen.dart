@@ -1,4 +1,4 @@
-import 'dart:convert';
+//import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:uri_launching/utilis/Authentication.dart';
@@ -27,11 +27,18 @@ class _LoginScreenState extends State<LoginScreen> {
           "loginusernamecontroller": loginusernamecontroller.text,
           "loginpasswordcontroller": loginpasswordcontroller.text
         });
-        var response = jsonDecode(res.body);
-        if (response["success"] == "true") {
+        // print("athulya" + res.body);
+        var response = "success";
+        var resp = "WRONG CREDENTIALS";
+
+        if (res.body == response) {
           print("Record inserted");
-        } else {
-          print("some issue");
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => DashboardScreen()));
+        }
+        if (res.body == resp) {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => LoginScreen()));
         }
       } catch (e) {
         print(e);
@@ -97,10 +104,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         MaterialStateProperty.all(Colorconstant.darkpurple)),
                 onPressed: () {
                   insertrecord();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DashboardScreen()));
+
+                  // setState(() {});
                 },
                 child: Text(
                   "Sign In",
