@@ -1,9 +1,14 @@
 //import 'dart:convert';
 
+//import 'dart:ffi';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:uri_launching/utilis/Authentication.dart';
 import 'package:uri_launching/utilis/color_constant/color_constant.dart';
 import 'package:uri_launching/view/dashborad_screen/dashboard_screen.dart';
+
 import 'package:uri_launching/view/signup_screen/signup_screen.dart';
 import 'package:http/http.dart' as http;
 
@@ -17,6 +22,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController loginusernamecontroller = TextEditingController();
   TextEditingController loginpasswordcontroller = TextEditingController();
+  final _formkey = GlobalKey<FormState>();
+
   Future<void> insertrecord() async {
     if (loginusernamecontroller.text != "" ||
         loginpasswordcontroller.text != "") {
@@ -33,12 +40,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
         if (res.body == response) {
           print("Record inserted");
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => DashboardScreen()));
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => DashboardScreen()),
+              (route) => false);
+          loginpasswordcontroller.clear();
+          loginusernamecontroller.clear();
         }
         if (res.body == resp) {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => LoginScreen()));
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => LoginScreen()),
+              (route) => false);
         }
       } catch (e) {
         print(e);
@@ -57,111 +70,140 @@ class _LoginScreenState extends State<LoginScreen> {
         actions: [Text("Version 1.0.0")],
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Image.asset(
-              "assets/images/Animation - 1715055684151.gif",
-              height: 100,
-            ),
-            Text(
-              "Log In",
-              style: TextStyle(
-                  color: Colorconstant.darkpurple,
-                  fontWeight: FontWeight.w900,
-                  fontSize: 40),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: TextFormField(
-                controller: loginusernamecontroller,
-                decoration: InputDecoration(
-                    hintText: "User Name", border: OutlineInputBorder()),
+        child: Form(
+          key: _formkey,
+          child: Column(
+            children: [
+              Image.asset(
+                "assets/images/Animation - 1715055684151.gif",
+                height: 100,
               ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: TextFormField(
-                controller: loginpasswordcontroller,
-                decoration: InputDecoration(
-                    hintText: "Password", border: OutlineInputBorder()),
+              Text(
+                "WELCOME",
+                style: TextStyle(
+                    color: Colorconstant.darkpurple,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 40),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 220),
-              child:
-                  TextButton(onPressed: () {}, child: Text("Forgot Password")),
-            ),
-            ElevatedButton(
-                style: ButtonStyle(
-                    fixedSize: MaterialStateProperty.all(Size(330, 50)),
-                    backgroundColor:
-                        MaterialStateProperty.all(Colorconstant.darkpurple)),
-                onPressed: () {
-                  insertrecord();
-
-                  // setState(() {});
-                },
-                child: Text(
-                  "Sign In",
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: const Color.fromARGB(255, 43, 34, 51)),
-                )),
-            SizedBox(
-              height: 5,
-            ),
-            Text("Login with Biometrics"),
-            IconButton(
-                onPressed: () async {
-                  bool auth = await Authentication.authentication();
-                  print("can Authenticate :$auth");
-                  if (auth) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DashboardScreen()));
-                  }
-                },
-                icon: Icon(
-                  Icons.fingerprint,
-                  size: 50,
-                )),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Dont have an account"),
-                TextButton(
-                    onPressed: () {
+              SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: TextFormField(
+                    controller: loginusernamecontroller,
+                    decoration: InputDecoration(
+                        hintText: "Username", border: OutlineInputBorder()),
+                    validator: (value) {
+                      if (value != null && value.length >= 7) {
+                        return null;
+                      } else {
+                        return "Username is Required";
+                      }
+                    }),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: TextFormField(
+                    controller: loginpasswordcontroller,
+                    decoration: InputDecoration(
+                        hintText: "Password", border: OutlineInputBorder()),
+                    validator: (value) {
+                      if (value != null && value.length >= 7) {
+                        return null;
+                      } else {
+                        return "Password is Required";
+                      }
+                    }),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 220),
+                child: TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      "Forgot Password",
+                      style: TextStyle(decoration: TextDecoration.underline),
+                    )),
+              ),
+              ElevatedButton(
+                  style: ButtonStyle(
+                      fixedSize: MaterialStateProperty.all(Size(330, 50)),
+                      backgroundColor:
+                          MaterialStateProperty.all(Colorconstant.darkpurple)),
+                  onPressed: () {
+                    insertrecord();
+                    _formkey.currentState!.validate();
+                    // if (_formkey.currentState!.validate()) {
+                    //   insertrecord();
+                    //   ScaffoldMessenger.of(context).showSnackBar(
+                    //       SnackBar(content: Text("Login Successful")));
+                    // } else {
+                    //   ScaffoldMessenger.of(context).showSnackBar(
+                    //       SnackBar(content: Text("Login failed")));
+                    // }
+                    // setState(() {});
+                  },
+                  child: Text(
+                    "Login",
+                    style:
+                        TextStyle(fontSize: 15, color: Colorconstant.mainwhite),
+                  )),
+              SizedBox(
+                height: 5,
+              ),
+              Text("Login with Biometrics"),
+              IconButton(
+                  onPressed: () async {
+                    bool auth = await Authentication.authentication();
+                    print("can Authenticate :$auth");
+                    if (auth) {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SignUpScreen()));
-                    },
-                    child: Text("Create"))
-              ],
-            ),
-            SizedBox(
-              height: 70,
-            ),
-            Container(
-              color: Colorconstant.mainblack,
-              height: 50,
-              width: double.infinity,
-              child: Center(
-                child: Text(
-                  "Developed by Avanzo Cyber Security Solutions",
-                  style:
-                      TextStyle(fontSize: 10, color: Colorconstant.mainwhite),
-                ),
+                              builder: (context) => DashboardScreen()));
+                    }
+                  },
+                  icon: Icon(
+                    Icons.fingerprint,
+                    size: 50,
+                  )),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Don't have an account?"),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignUpScreen()));
+                      },
+                      child: Text(
+                        "Signup",
+                        style: TextStyle(decoration: TextDecoration.underline),
+                      ))
+                ],
               ),
-            )
-          ],
+              SizedBox(
+                height: 70,
+              ),
+              Container(
+                color: Colorconstant.mainblack,
+                height: 50,
+                width: double.infinity,
+                child: Center(
+                  child: Text(
+                    "Developed by Avanzo Cyber Security Solutions",
+                    style:
+                        TextStyle(fontSize: 10, color: Colorconstant.mainwhite),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

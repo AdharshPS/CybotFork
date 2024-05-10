@@ -1,11 +1,11 @@
-import 'dart:convert';
+//import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:uri_launching/utilis/color_constant/color_constant.dart';
 //import 'package:uri_launching/view/authorization_screen/authorization_screen.dart';
 import 'package:http/http.dart' as http;
-//import 'package:uri_launching/view/dashborad_screen/dashboard_screen.dart';
-//import 'package:uri_launching/view/login_screen/login_screen.dart';
+import 'package:uri_launching/view/dashborad_screen/dashboard_screen.dart';
+import 'package:uri_launching/view/login_screen/login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -21,6 +21,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController mailidcontroller = TextEditingController();
   TextEditingController usernamecontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
+  TextEditingController conpasswordcontroller = TextEditingController();
   final _formkey = GlobalKey<FormState>();
 
   String? validateEmail(String? email) {
@@ -50,11 +51,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
           "usernamecontroller": usernamecontroller.text,
           "passwordcontroller": passwordcontroller.text
         });
-        var response = jsonDecode(res.body);
-        if (response["success"] == "true") {
+        var response = "success";
+        var resp = "WRONG CREDENTIALS";
+
+        if (res.body == response) {
           print("Record inserted");
-        } else {
-          print("some issue");
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => DashboardScreen()),
+              (route) => false);
+        }
+        if (res.body == resp) {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => LoginScreen()),
+              (route) => false);
         }
       } catch (e) {
         print(e);
@@ -81,7 +92,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               //   "assets/images/Animation - 1715055684151.gif",
               //   height: 70,
               // ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               const Text(
@@ -117,10 +128,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
                 child: TextFormField(
-                  controller: phnumbercontroller,
-                  decoration: const InputDecoration(
-                      hintText: "Phone Number", border: OutlineInputBorder()),
-                ),
+                    controller: phnumbercontroller,
+                    decoration: const InputDecoration(
+                        hintText: "Phone Number", border: OutlineInputBorder()),
+                    validator: (value) {
+                      if (value != null && value.length >= 7) {
+                        return null;
+                      } else {
+                        return "Mobile number is required";
+                      }
+                    }),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
@@ -134,26 +151,47 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
                 child: TextFormField(
-                  controller: usernamecontroller,
-                  decoration: const InputDecoration(
-                      hintText: "User Name", border: OutlineInputBorder()),
-                ),
+                    controller: usernamecontroller,
+                    decoration: const InputDecoration(
+                        hintText: "User Name", border: OutlineInputBorder()),
+                    validator: (value) {
+                      if (value != null && value.length >= 5) {
+                        return null;
+                      } else {
+                        return "Please Enter a Valid Username";
+                      }
+                    }),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
                 child: TextFormField(
-                  controller: passwordcontroller,
-                  decoration: const InputDecoration(
-                      hintText: "Enter Password", border: OutlineInputBorder()),
-                ),
+                    controller: passwordcontroller,
+                    decoration: const InputDecoration(
+                        hintText: "Enter Password",
+                        border: OutlineInputBorder()),
+                    validator: (value) {
+                      if (value != null && value.length >= 6) {
+                        return null;
+                      } else {
+                        return "Password is not Sufficient to secure your Account";
+                      }
+                    }),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.all(12),
-              //   child: TextFormField(
-              //     decoration: InputDecoration(
-              //         hintText: "Confirm Pssword", border: OutlineInputBorder()),
-              //   ),
-              // ),
+              Padding(
+                padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
+                child: TextFormField(
+                    controller: conpasswordcontroller,
+                    decoration: InputDecoration(
+                        hintText: "Confirm Pssword",
+                        border: OutlineInputBorder()),
+                    validator: (value) {
+                      if (value != null && value == passwordcontroller.text) {
+                        return null;
+                      } else {
+                        return "Password is not match";
+                      }
+                    }),
+              ),
               const SizedBox(
                 height: 24,
               ),
@@ -164,9 +202,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           MaterialStateProperty.all(Colorconstant.darkpurple)),
                   onPressed: () {
                     insertrecord();
-                    _formkey.currentState!.validate();
-                    // mailidcontroller.clear();
-                    // firstnamecontroller.clear();
+
+                    if (_formkey.currentState!.validate()) {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen()),
+                          (route) => false);
+                      // mailidcontroller.clear();
+                      // firstnamecontroller.clear();
+                      // lastnamecontroller.clear();
+                      // passwordcontroller.clear();
+                      // phnumbercontroller.clear();
+                      // usernamecontroller.clear();
+                    }
                   },
                   child: const Text(
                     "Submit",
