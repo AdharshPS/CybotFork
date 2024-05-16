@@ -5,6 +5,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hive/hive.dart';
 import 'package:uri_launching/utilis/Authentication.dart';
 import 'package:uri_launching/utilis/color_constant/color_constant.dart';
 import 'package:uri_launching/view/dashborad_screen/dashboard_screen.dart';
@@ -23,6 +24,32 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController loginusernamecontroller = TextEditingController();
   TextEditingController loginpasswordcontroller = TextEditingController();
   final _formkey = GlobalKey<FormState>();
+  bool isChecked = false;
+  late Box box1;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    createOpenBox();
+  }
+
+  void createOpenBox() async {
+    box1 = await Hive.openBox('logindata');
+    getdata();
+  }
+
+  void getdata() async {
+    if (box1.get('email') != null) {
+      loginusernamecontroller.text = box1.get('email');
+      isChecked = true;
+      setState(() {});
+    }
+    if (box1.get('pass') != null) {
+      loginpasswordcontroller.text = box1.get('pass');
+      isChecked = true;
+      setState(() {});
+    }
+  }
 
   Future<void> insertrecord() async {
     if (loginusernamecontroller.text != "" ||
@@ -95,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     decoration: InputDecoration(
                         hintText: "Username", border: OutlineInputBorder()),
                     validator: (value) {
-                      if (value != null && value.length >= 7) {
+                      if (value != null && value.length >= 5) {
                         return null;
                       } else {
                         return "Username is Required";
@@ -119,14 +146,32 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                     }),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 220),
-                child: TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      "Forgot Password",
-                      style: TextStyle(decoration: TextDecoration.underline),
-                    )),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                // crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Remember Me",
+                    style: TextStyle(color: Colorconstant.mainblack),
+                  ),
+                  Checkbox(
+                    value: isChecked,
+                    onChanged: (value) {
+                      isChecked = !isChecked;
+                      setState(() {});
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 60),
+                    child: TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          "Forgot Password",
+                          style:
+                              TextStyle(decoration: TextDecoration.underline),
+                        )),
+                  ),
+                ],
               ),
               ElevatedButton(
                   style: ButtonStyle(
@@ -136,6 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {
                     insertrecord();
                     _formkey.currentState!.validate();
+                    login();
                     // if (_formkey.currentState!.validate()) {
                     //   insertrecord();
                     //   ScaffoldMessenger.of(context).showSnackBar(
@@ -144,7 +190,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     //   ScaffoldMessenger.of(context).showSnackBar(
                     //       SnackBar(content: Text("Login failed")));
                     // }
-                    // setState(() {});
                   },
                   child: Text(
                     "Login",
@@ -188,7 +233,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
               SizedBox(
-                height: 70,
+                height: 230,
               ),
               Container(
                 color: Colorconstant.mainblack,
@@ -207,5 +252,12 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  void login() {
+    if (isChecked) {
+      box1.put('email', loginusernamecontroller.value.text);
+      box1.put('pass', loginpasswordcontroller.value.text);
+    }
   }
 }

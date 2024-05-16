@@ -55,7 +55,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 height: 20,
               ),
               Text(
-                "CYBOT",
+                "CYBERHULK",
                 style: TextStyle(fontSize: 50, fontWeight: FontWeight.w600),
               ),
               SizedBox(
