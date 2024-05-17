@@ -1,13 +1,15 @@
-import 'dart:convert';
+// import 'dart:convert';
 import 'dart:developer';
-import 'dart:html';
+// import 'dart:html';
+
+//import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:uri_launching/utilis/color_constant/color_constant.dart';
-import 'package:uri_launching/utilis/list_answers/list_answers.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:intl/intl_standalone.dart';
 import 'package:http/http.dart' as http;
 
 class DashboardScreen extends StatefulWidget {
@@ -20,6 +22,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   TextEditingController askquestioncontroller = TextEditingController();
   dynamic res = "";
+ 
 
   //final SpeechToText _speechToText = SpeechToText();
 //  bool _speechEnabled = false;
@@ -27,16 +30,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   // List questionanswers = [];
 
-  Future<void> askquestion() async {
+  Future<String> askquestion() async {
     String uri = "https://cybot.avanzosolutions.in/cybot/search_text.php";
     try {
       res = await http.post(Uri.parse(uri), body: {
         "askquestioncontroller": askquestioncontroller.text,
       });
+      //log(res.body);
+    //String data = res.body;
+   // return data;
     } catch (e) {
       print(e);
+      return e.toString();
     }
-    print(res.body);
+    
   }
 
   // @override
@@ -359,10 +366,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             ElevatedButton(
                 onPressed: () {
+                  String response=  await askquestion();
                   //_launchURL("www.ask.avanzosolutions.in");
                   askquestion();
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ListAnswers()));
+                  setState(() {});
+                  // Navigator.push(context,
+                  //     MaterialPageRoute(builder: (context) => ListAnswers()));
                   //Text(res);
 
                   // ListView.separated(
@@ -371,8 +380,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   //           height: 5,
                   //         ),
                   //     itemCount: 30);
-
-                  //  setState(() {});
                 },
                 child: Text("Ask")),
             SizedBox(
