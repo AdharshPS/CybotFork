@@ -4,7 +4,9 @@ import 'dart:developer';
 
 //import 'dart:math';
 
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:uri_launching/controller/suggestion_list/suggestion_list.dart';
 import 'package:uri_launching/utilis/color_constant/color_constant.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl_standalone.dart';
@@ -20,6 +22,7 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   TextEditingController askquestioncontroller = TextEditingController();
+  GlobalKey<AutoCompleteTextFieldState<String>> key = GlobalKey();
   late stt.SpeechToText _speech;
   bool _isListening = false;
   String _text = '';
@@ -57,6 +60,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
         _speech.listen(
           onResult: (val) => setState(() {
             askquestioncontroller.text = val.recognizedWords;
+            _text = val.recognizedWords;
+            askquestioncontroller.text = _text;
+            askquestioncontroller.selection = TextSelection.fromPosition(
+                TextPosition(offset: askquestioncontroller.text.length));
           }),
         );
       }
@@ -98,218 +105,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
               height: 35,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Container(
-                //   height: 35,
-                //   width: 110,
-                //   decoration: BoxDecoration(
-                //       color: Colorconstant.pantonemessage,
-                //       borderRadius: BorderRadius.circular(20)),
-                //   child: Center(child: Text("Cyber Security")),
-                // ),
-                // SizedBox(
-                //   width: 5,
-                // ),
-                // Container(
-                //   height: 35,
-                //   width: 110,
-                //   decoration: BoxDecoration(
-                //       color: Colorconstant.pantonemessage,
-                //       borderRadius: BorderRadius.circular(20)),
-                //   child: Center(child: Text("Malware")),
-                // ),
-                // SizedBox(
-                //   width: 5,
-                // ),
-                // Container(
-                //   height: 35,
-                //   width: 110,
-                //   decoration: BoxDecoration(
-                //       color: Colorconstant.pantonemessage,
-                //       borderRadius: BorderRadius.circular(20)),
-                //   child: Center(child: Text("Cyber Forensics")),
-                // ),
-              ],
-            ),
-            // SizedBox(
-            //   height: 5,
-            // ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Container(
-                //   height: 35,
-                //   width: 110,
-                //   decoration: BoxDecoration(
-                //       color: Colorconstant.pantonemessage,
-                //       borderRadius: BorderRadius.circular(20)),
-                //   child: Center(child: Text("Malware")),
-                // ),
-                // SizedBox(
-                //   width: 5,
-                // ),
-                // Container(
-                //   height: 35,
-                //   width: 110,
-                //   decoration: BoxDecoration(
-                //       color: Colorconstant.pantonemessage,
-                //       borderRadius: BorderRadius.circular(20)),
-                //   child: Center(child: Text("Malware")),
-                // ),
-                // SizedBox(
-                //   width: 5,
-                // ),
-              ],
-            ),
-            // SizedBox(
-            //   height: 5,
-            // ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Container(
-                //   height: 35,
-                //   width: 110,
-                //   decoration: BoxDecoration(
-                //       color: Colorconstant.pantonemessage,
-                //       borderRadius: BorderRadius.circular(20)),
-                //   child: Center(child: Text("Cyber Security")),
-                // ),
-                // SizedBox(
-                //   width: 5,
-                // ),
-                // Container(
-                //   height: 35,
-                //   width: 110,
-                //   decoration: BoxDecoration(
-                //       color: Colorconstant.pantonemessage,
-                //       borderRadius: BorderRadius.circular(20)),
-                //   child: Center(child: Text("Malware")),
-                // ),
-                // SizedBox(
-                //   width: 5,
-                // ),
-                // Container(
-                //   height: 35,
-                //   width: 110,
-                //   decoration: BoxDecoration(
-                //       color: Colorconstant.pantonemessage,
-                //       borderRadius: BorderRadius.circular(20)),
-                //   child: Center(child: Text("Cyber Forensics")),
-                // ),
-              ],
-            ),
-            // SizedBox(
-            //   height: 5,
-            // ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Container(
-                //   height: 35,
-                //   width: 110,
-                //   decoration: BoxDecoration(
-                //       color: Colorconstant.pantonemessage,
-                //       borderRadius: BorderRadius.circular(20)),
-                //   child: Center(child: Text("Cyber Security")),
-                // ),
-                // SizedBox(
-                //   width: 5,
-                // ),
-                // Container(
-                //   height: 35,
-                //   width: 110,
-                //   decoration: BoxDecoration(
-                //       color: Colorconstant.pantonemessage,
-                //       borderRadius: BorderRadius.circular(20)),
-                //   child: Center(child: Text("Malware")),
-                // ),
-                // SizedBox(
-                //   width: 5,
-                // ),
-                // Container(
-                //   height: 35,
-                //   width: 110,
-                //   decoration: BoxDecoration(
-                //       color: Colorconstant.pantonemessage,
-                //       borderRadius: BorderRadius.circular(20)),
-                //   child: Center(child: Text("Cyber Forensics")),
-                // ),
-              ],
-            ),
-            // SizedBox(
-            //   height: 5,
-            // ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Container(
-                //   height: 35,
-                //   width: 110,
-                //   decoration: BoxDecoration(
-                //       color: Colorconstant.pantonemessage,
-                //       borderRadius: BorderRadius.circular(20)),
-                //   child: Center(child: Text("Malware")),
-                // ),
-                // SizedBox(
-                //   width: 5,
-                // ),
-                // Container(
-                //   height: 35,
-                //   width: 110,
-                //   decoration: BoxDecoration(
-                //       color: Colorconstant.pantonemessage,
-                //       borderRadius: BorderRadius.circular(20)),
-                //   child: Center(child: Text("Malware")),
-                // ),
-                // SizedBox(
-                //   width: 5,
-                // ),
-              ],
-            ),
-            // SizedBox(
-            //   height: 5,
-            // ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Container(
-                //   height: 35,
-                //   width: 110,
-                //   decoration: BoxDecoration(
-                //       color: Colorconstant.pantonemessage,
-                //       borderRadius: BorderRadius.circular(20)),
-                //   child: Center(child: Text("Cyber Security")),
-                // ),
-                // SizedBox(
-                //   width: 5,
-                // ),
-                // Container(
-                //   height: 35,
-                //   width: 110,
-                //   decoration: BoxDecoration(
-                //       color: Colorconstant.pantonemessage,
-                //       borderRadius: BorderRadius.circular(20)),
-                //   child: Center(child: Text("Malware")),
-                // ),
-                // SizedBox(
-                //   width: 5,
-                // ),
-                // Container(
-                //   height: 35,
-                //   width: 110,
-                //   decoration: BoxDecoration(
-                //       color: Colorconstant.pantonemessage,
-                //       borderRadius: BorderRadius.circular(20)),
-                //   child: Center(child: Text("Cyber Forensics")),
-                // ),
-              ],
-            ),
-            // SizedBox(
-            //   height: 50,
-            // ),
-            Row(
               //crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -330,17 +125,43 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10),
-              child: TextFormField(
+              child: AutoCompleteTextField(
                 controller: askquestioncontroller,
                 decoration: InputDecoration(
-                    suffix: IconButton(
-                      icon: Icon(_isListening ? Icons.mic : Icons.mic_none),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isListening ? Icons.mic_none : Icons.mic,
+                      ),
                       onPressed: _listen,
                     ),
                     border: OutlineInputBorder()),
+                itemSubmitted: (item) {
+                  askquestioncontroller.text = item;
+                },
+                clearOnSubmit: false,
+                key: key,
+                suggestions: Suggestions.suggestionlist,
+                itemBuilder: (context, item) {
+                  return Container(
+                    padding: EdgeInsets.all(20),
+                    child: Row(
+                      children: [
+                        Text(
+                          item,
+                          style: TextStyle(color: Colorconstant.mainblack),
+                        )
+                      ],
+                    ),
+                  );
+                },
+                itemSorter: (a, b) {
+                  return a.compareTo(b);
+                },
+                itemFilter: (item, query) {
+                  return item.toLowerCase().startsWith(query.toLowerCase());
+                },
               ),
             ),
-
             SizedBox(
               height: 15,
             ),

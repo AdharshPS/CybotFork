@@ -43,7 +43,9 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   speech_to_text: ^6.6.1
-  
+  autocomplete_textfield: ^2.0.1
+  toast: ^0.2.9
+  mailer: ^6.1.0
  
 
 dev_dependencies:

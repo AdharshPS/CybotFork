@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
+import 'package:uri_launching/controller/Fogrot_password/forgot_password.dart';
 import 'package:uri_launching/utilis/Authentication.dart';
 import 'package:uri_launching/utilis/color_constant/color_constant.dart';
 import 'package:uri_launching/view/dashborad_screen/dashboard_screen.dart';
@@ -23,14 +24,17 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController loginusernamecontroller = TextEditingController();
   TextEditingController loginpasswordcontroller = TextEditingController();
+  bool passwordVisible = false;
   final _formkey = GlobalKey<FormState>();
   bool isChecked = false;
   late Box box1;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     createOpenBox();
+    passwordVisible = true;
   }
 
   void createOpenBox() async {
@@ -135,16 +139,31 @@ class _LoginScreenState extends State<LoginScreen> {
               Padding(
                 padding: const EdgeInsets.all(12),
                 child: TextFormField(
-                    controller: loginpasswordcontroller,
-                    decoration: InputDecoration(
-                        hintText: "Password", border: OutlineInputBorder()),
-                    validator: (value) {
-                      if (value != null && value.length >= 7) {
-                        return null;
-                      } else {
-                        return "Password is Required";
-                      }
-                    }),
+                  obscureText: passwordVisible,
+                  controller: loginpasswordcontroller,
+                  decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            passwordVisible = !passwordVisible;
+                          });
+                        },
+                        icon: Icon(passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off),
+                      ),
+                      hintText: "Password",
+                      border: OutlineInputBorder()),
+                  validator: (value) {
+                    if (value != null && value.length >= 7) {
+                      return null;
+                    } else {
+                      return "Password is Required";
+                    }
+                  },
+                  keyboardType: TextInputType.visiblePassword,
+                  textInputAction: TextInputAction.done,
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -164,7 +183,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   Padding(
                     padding: const EdgeInsets.only(left: 60),
                     child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ForgotPasswordScreen()));
+                        },
                         child: Text(
                           "Forgot Password",
                           style:

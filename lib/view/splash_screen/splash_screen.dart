@@ -27,9 +27,9 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colorconstant.pantonemessage,
+      backgroundColor: Colorconstant.mainblack,
       appBar: AppBar(
-        backgroundColor: Colorconstant.pantonemessage,
+        backgroundColor: Colorconstant.mainblack,
         actions: [Text("Version 1.0.0")],
       ),
       // appBar: AppBar(
@@ -56,7 +56,10 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
               Text(
                 "CYBERHULK",
-                style: TextStyle(fontSize: 50, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                    color: Colorconstant.pantonemessage,
+                    fontSize: 50,
+                    fontWeight: FontWeight.w600),
               ),
               SizedBox(
                 height: 320,
