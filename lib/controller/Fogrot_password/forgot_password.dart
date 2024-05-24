@@ -1,88 +1,74 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:uri_launching/utilis/color_constant/color_constant.dart';
+import 'package:uri_launching/view/login_screen/login_screen.dart';
 import 'package:http/http.dart' as http;
-import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server/gmail.dart';
-import 'package:toast/toast.dart';
-import 'package:uri_launching/utilis/credentials.dart/credentials.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
+  const ForgotPasswordScreen({super.key});
+
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
 }
 
-class _MyHomePageState extends State<ForgotPasswordScreen> {
-  bool verifyButton = false;
-  TextEditingController user = TextEditingController();
-  String verifylink = "";
-  Future checkUser() async {
-    if (user.text.isNotEmpty) {
-      String uri = "http://192.168.1.103/flutter-forget-pass-recover/check.php";
-      var response =
-          await http.post(Uri.parse(uri), body: {"username": user.text});
-      var link = json.decode(response.body);
-
-      if (link == 'INVALIDUSER') {
-        showToast("There have no user this type in our database",
-            duration: 6, gravity: Toast.center);
-      } else {
-        setState(() {
-          verifylink = link;
-          verifyButton = true;
-          sendMail();
-        });
-        showToast("Click The Verify Button To Change The Password",
-            duration: 4, gravity: Toast.center);
-      }
-      print(link);
-    } else {
-      showToast("Enter User Email", duration: 3, gravity: Toast.top);
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+  TextEditingController emailcontroller = TextEditingController();
+  TextEditingController loginusernamecontroller = TextEditingController();
+  TextEditingController passwordconttroller = TextEditingController();
+  TextEditingController conpasswordcontroller = TextEditingController();
+  final _formkey = GlobalKey<FormState>();
+  String? validateEmail(String? email) {
+    RegExp emailRegex = RegExp(
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+    final isEmailvalid = emailRegex.hasMatch(email ?? '');
+    if (!isEmailvalid) {
+      return 'Please enter a valid email';
     }
+    return null;
   }
 
-  int newPass = 0;
-  Future verify(String verifylink) async {
-    var response = await http.post(Uri.parse(verifylink));
-    var link = json.decode(response.body);
+  Future<bool> insertrecord() async {
+    if (loginusernamecontroller.text.isNotEmpty ||
+        passwordconttroller.text.isNotEmpty ||
+        emailcontroller.text.isNotEmpty) {
+      try {
+        String uri =
+            "https://cybot.avanzosolutions.in/cybot/forgetpassword.php";
+        var res = await http.post(Uri.parse(uri), body: {
+          "loginusernamecontroller": loginusernamecontroller.text,
+          "emailcontroller": emailcontroller.text,
+          "passwordconttroller": passwordconttroller.text,
+        });
 
-    setState(() {
-      newPass = link;
-    });
-    showToast("Your password has been change! you new password : $newPass",
-        duration: 5, gravity: Toast.center);
-    print(link);
-  }
+        print(res.body);
 
-  //mail
-  sendMail() async {
-    String username = EMAIL;
-    String password = PASS;
+        // var response = "success";
+        // var resp = "WRONG CREDENTIALS";
 
-    final smtpServer = gmail(username, password);
-    // Creating the Gmail server
+        // if (res.body == response) {
+        //   print("Record inserted");
+        //   Navigator.pushAndRemoveUntil(
+        //       context,
+        //       MaterialPageRoute(builder: (context) => LoginScreen()),
+        //       (route) => false);
+        //   passwordconttroller.clear();
+        //   loginusernamecontroller.clear();
+        //   emailcontroller.clear();
+        // }
+        // if (res.body == resp) {
+        //   Navigator.pushAndRemoveUntil(
+        //       context,
+        //       MaterialPageRoute(builder: (context) => LoginScreen()),
+        //       (route) => false);
+        // }
 
-    // Create our email message.
-    final message = Message()
-      ..from = Address(username)
-      ..recipients.add('abc@gmail.com') //recipent email
-      //..ccRecipients.addAll(['destCc1@example.com', 'destCc2@example.com']) //cc Recipents emails
-      //..bccRecipients.add(Address('bccAddress@example.com')) //bcc Recipents emails
-      ..subject =
-          'Password recover link from Athulya : ${DateTime.now()}' //subject of the email
-      //..text =
-      //'This is the plain text.\nThis is line 2 of the text part.'
-      ..html =
-          "<h3>Thanks for with localhost. Please click this link to reset your password</h3>\n<p> <a href='$verifylink'>Click me to reset</a></p>"; //body of the email
-
-    try {
-      final sendReport = await send(message, smtpServer);
-      print('Message sent: ' +
-          sendReport.toString()); //print if the email is sent
-    } on MailerException catch (e) {
-      print('Message not sent. \n' +
-          e.toString()); //print if the email is not sent
-      // e.toString() will show why the email is not sending
+        return res.body == "success";
+      } catch (e) {
+        print(e);
+        return false;
+      }
+    } else {
+      print("please fill all fields");
+      return false;
     }
   }
 
@@ -90,62 +76,124 @@ class _MyHomePageState extends State<ForgotPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Recover Your Password'),
+        title: Text(
+          "Forgot Password",
+          style: TextStyle(
+              fontWeight: FontWeight.bold, color: Colorconstant.darkpurple),
+        ),
       ),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: user,
-                decoration: InputDecoration(hintText: 'Enter Your Email'),
+      body: Form(
+        key: _formkey,
+        child: SingleChildScrollView(
+          child: Column(
+            //  mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 60,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: MaterialButton(
-                color: Colors.orange[400],
-                child: Text('Recover Passowrd'),
-                onPressed: () {
-                  checkUser();
-                  setState(() {
-                    user.text = "";
-                  });
-                },
+              Padding(
+                padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
+                child: TextFormField(
+                    controller: loginusernamecontroller,
+                    decoration: const InputDecoration(
+                        hintText: "User Name", border: OutlineInputBorder()),
+                    validator: (value) {
+                      if (value != null && value.length >= 5) {
+                        return null;
+                      } else {
+                        return "Please Enter a Valid Username";
+                      }
+                    }),
               ),
-            ),
-            verifyButton
-                ? MaterialButton(
-                    color: Colors.red[400],
-                    child: Text(
-                      'Verify',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        verifyButton = false;
-                        verify(verifylink);
-                      });
-                    },
-                  )
-                : Container(),
-            SizedBox(
-              height: 40,
-            ),
-            newPass == 0
-                ? Container()
-                : Text(
-                    'Your New Password: $newPass',
-                    style: TextStyle(fontSize: 20, color: Colors.green),
-                  ),
-          ],
+              SizedBox(
+                height: 15,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
+                child: TextFormField(
+                  //   controller: mailidcontroller,
+                  decoration: const InputDecoration(
+                      hintText: "Email Id", border: OutlineInputBorder()),
+                  validator: validateEmail,
+                ),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
+                child: TextFormField(
+                    controller: passwordconttroller,
+                    decoration: const InputDecoration(
+                        hintText: "Enter Password",
+                        border: OutlineInputBorder()),
+                    validator: (value) {
+                      if (value != null && value.length >= 6) {
+                        return null;
+                      } else {
+                        return "Password is not Sufficient to secure your Account";
+                      }
+                    }),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
+                child: TextFormField(
+                    controller: conpasswordcontroller,
+                    decoration: InputDecoration(
+                        hintText: "Confirm Pssword",
+                        border: OutlineInputBorder()),
+                    validator: (value) {
+                      if (value != null && value == passwordconttroller.text) {
+                        return null;
+                      } else {
+                        return "Password is not match";
+                      }
+                    }),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                  style: ButtonStyle(
+                      fixedSize: MaterialStateProperty.all(Size(330, 50)),
+                      backgroundColor:
+                          MaterialStateProperty.all(Colorconstant.darkpurple)),
+                  onPressed: () async {
+                    if (_formkey.currentState!.validate()) {
+                      bool success = await insertrecord();
+                      if (success) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Reset Successful"),
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+                        Future.delayed(Duration(seconds: 2), () {
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginScreen()),
+                              (route) => false);
+                        });
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Reset failed")),
+                        );
+                      }
+                    }
+                  },
+                  child: Text(
+                    "Reset",
+                    style:
+                        TextStyle(fontSize: 15, color: Colorconstant.mainwhite),
+                  )),
+            ],
+          ),
         ),
       ),
     );
-  }
-
-  void showToast(String msg, {required int duration, required int gravity}) {
-    Toast.show(msg, duration: duration, gravity: gravity);
   }
 }

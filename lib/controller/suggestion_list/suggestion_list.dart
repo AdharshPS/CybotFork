@@ -34,7 +34,6 @@ class Suggestions {
     'How can I prevent identity theft?',
     'What steps can I take if I' 've lost access to my re',
     'IT Policies',
-    'WEST BENGAL',
     'How can I prevent identity theft?',
     'How do I create a strong password?'
   ];

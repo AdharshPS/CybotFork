@@ -6,4 +6,6 @@ class Colorconstant {
   static const Color darkpurple = Color(0xff7B1FA2);
   static const Color mainblack = Colors.black;
   static const Color mainwhite = Colors.white;
+  static const Color hulkgreen = Color(0xff66ff00);
+  static const Color hulkgreen2 = Color(0xff008000);
 }

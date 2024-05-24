@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:uri_launching/controller/suggestion_list/suggestion_list.dart';
 import 'package:uri_launching/utilis/color_constant/color_constant.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:intl/intl_standalone.dart';
 import 'package:http/http.dart' as http;
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
@@ -27,7 +26,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   bool _isListening = false;
   String _text = '';
   dynamic res = "";
-  String story = "";
+  String answers = "";
   Future<String> askquestion() async {
     String uri = "https://cybot.avanzosolutions.in/cybot/search_text.php";
     try {
@@ -74,6 +73,37 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   @override
+  void dispose() {
+    askquestioncontroller.dispose();
+    super.dispose();
+  }
+
+  void _setTextFieldText(String text) {
+    setState(() {
+      askquestioncontroller.text = text;
+    });
+  }
+
+  Widget _buildClickableContainer(String text) {
+    return GestureDetector(
+      onTap: () => _setTextFieldText(text),
+      child: Container(
+        padding: EdgeInsets.all(8.0),
+        margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+        decoration: BoxDecoration(
+          color: Colorconstant.pantonebackground,
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        child: Text(
+          text,
+          style: TextStyle(
+              color: Colorconstant.mainwhite, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -87,7 +117,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               height: 10,
             ),
             Image.asset(
-              "assets/images/Animation - 1715055684151.gif",
+              "assets/images/avzlogo.png",
+              height: 100,
             ),
             SizedBox(
               height: 18,
@@ -96,32 +127,68 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: Text(
                 "CYBERHULK",
                 style: TextStyle(
-                    color: Colors.green[800],
+                    color: Colorconstant.darkpurple,
                     fontSize: 35,
                     fontWeight: FontWeight.w900),
               ),
             ),
             SizedBox(
-              height: 35,
+              height: 20,
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  _launchURL(
+                    "www.chat.avanzosolutions.in",
+                  );
+                },
+                child: Text("Chat")),
+            SizedBox(
+              height: 15,
             ),
             Row(
-              //crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
-                  width: 20,
-                ),
-                ElevatedButton(
-                    onPressed: () {
-                      _launchURL(
-                        "www.chat.avanzosolutions.in",
-                      );
-                    },
-                    child: Text("Chat"))
+                _buildClickableContainer("Phishing"),
+                _buildClickableContainer("Cyber security"),
+                _buildClickableContainer("Malware"),
               ],
             ),
             SizedBox(
-              height: 15,
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildClickableContainer("Hacking"),
+                _buildClickableContainer("Data breach"),
+                _buildClickableContainer("DDoS attack"),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildClickableContainer("Firewall"),
+                _buildClickableContainer("Patch"),
+                _buildClickableContainer("Firewall"),
+                _buildClickableContainer("Encryption")
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildClickableContainer("Security incident"),
+                _buildClickableContainer("Phishing"),
+                _buildClickableContainer("Ransomware"),
+              ],
+            ),
+            SizedBox(
+              height: 25,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10),
@@ -168,8 +235,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ElevatedButton(
                 onPressed: () async {
                   String response = await askquestion();
-                  story = response;
-                  log("this will be printed on ui ==============$story");
+                  answers = response;
+                  log("this will be printed on ui ==============$answers");
                   setState(() {});
                   askquestioncontroller.clear();
 
@@ -192,13 +259,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               height: 10,
             ),
             Padding(
-              padding: const EdgeInsets.all(20),
-              child: Container(
-                child: Text(story),
-              ),
-            ),
-            SizedBox(
-              height: 220,
+              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+              child: Container(child: Text(answers)),
             ),
             Container(
               color: Colorconstant.mainblack,

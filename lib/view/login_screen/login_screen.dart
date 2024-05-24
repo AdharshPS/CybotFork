@@ -105,8 +105,11 @@ class _LoginScreenState extends State<LoginScreen> {
           key: _formkey,
           child: Column(
             children: [
+              SizedBox(
+                height: 30,
+              ),
               Image.asset(
-                "assets/images/Animation - 1715055684151.gif",
+                "assets/images/avzlogo.png",
                 height: 100,
               ),
               Text(
@@ -230,7 +233,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     bool auth = await Authentication.authentication();
                     print("can Authenticate :$auth");
                     if (auth) {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) => DashboardScreen()));
@@ -258,7 +261,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
               SizedBox(
-                height: 230,
+                height: 28,
               ),
               Container(
                 color: Colorconstant.mainblack,
