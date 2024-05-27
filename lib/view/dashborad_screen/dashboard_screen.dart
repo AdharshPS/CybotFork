@@ -7,7 +7,20 @@ import 'dart:developer';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:uri_launching/controller/suggestion_list/suggestion_list.dart';
+import 'package:uri_launching/utilis/AI.dart';
 import 'package:uri_launching/utilis/color_constant/color_constant.dart';
+import 'package:uri_launching/utilis/cyber_security_text.dart';
+import 'package:uri_launching/utilis/data_breach.dart';
+import 'package:uri_launching/utilis/ddos_attack.dart';
+import 'package:uri_launching/utilis/encryption.dart';
+import 'package:uri_launching/utilis/firewall.dart';
+import 'package:uri_launching/utilis/hacking_text.dart';
+import 'package:uri_launching/utilis/malware_text.dart';
+import 'package:uri_launching/utilis/patch.dart';
+import 'package:uri_launching/utilis/phishing_text.dart';
+import 'package:uri_launching/utilis/ransomware.dart';
+import 'package:uri_launching/utilis/robotics.dart';
+import 'package:uri_launching/utilis/security_incident.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import 'package:speech_to_text/speech_to_text.dart' as stt;
@@ -78,15 +91,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
     super.dispose();
   }
 
-  void _setTextFieldText(String text) {
-    setState(() {
-      askquestioncontroller.text = text;
-    });
+  void _setTextFieldText(Widget targetscreen) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => targetscreen));
   }
 
-  Widget _buildClickableContainer(String text) {
+  Widget _buildClickableContainer(String text, Widget targetscreen) {
     return GestureDetector(
-      onTap: () => _setTextFieldText(text),
+      onTap: () => _setTextFieldText(targetscreen),
       child: Container(
         padding: EdgeInsets.all(8.0),
         margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
@@ -148,9 +160,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buildClickableContainer("Phishing"),
-                _buildClickableContainer("Cyber security"),
-                _buildClickableContainer("Malware"),
+                _buildClickableContainer("Phishing", PhishingText()),
+                _buildClickableContainer("Cyber security", CyberSecuritytext()),
+                _buildClickableContainer("Malware", Malwaretext()),
               ],
             ),
             SizedBox(
@@ -159,9 +171,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buildClickableContainer("Hacking"),
-                _buildClickableContainer("Data breach"),
-                _buildClickableContainer("DDoS attack"),
+                _buildClickableContainer("Hacking", Hackingtext()),
+                _buildClickableContainer("Data breach", Databreach()),
+                _buildClickableContainer("DDoS attack", DDOSAttacktext()),
               ],
             ),
             SizedBox(
@@ -170,10 +182,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buildClickableContainer("Firewall"),
-                _buildClickableContainer("Patch"),
-                _buildClickableContainer("Firewall"),
-                _buildClickableContainer("Encryption")
+                _buildClickableContainer("Firewall", FireWalltext()),
+                _buildClickableContainer("Patch", Patchtext()),
+                _buildClickableContainer("AI", AItext()),
+                _buildClickableContainer("Encryption", Encryptiontext())
               ],
             ),
             SizedBox(
@@ -182,9 +194,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buildClickableContainer("Security incident"),
-                _buildClickableContainer("Phishing"),
-                _buildClickableContainer("Ransomware"),
+                _buildClickableContainer(
+                    "Security incident", Securityincidenttext()),
+                _buildClickableContainer("Robotics", Roboticstext()),
+                _buildClickableContainer("Ransomware", Ransomeware()),
               ],
             ),
             SizedBox(
@@ -209,15 +222,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 key: key,
                 suggestions: Suggestions.suggestionlist,
                 itemBuilder: (context, item) {
-                  return Container(
-                    padding: EdgeInsets.all(20),
-                    child: Row(
-                      children: [
-                        Text(
-                          item,
-                          style: TextStyle(color: Colorconstant.mainblack),
-                        )
-                      ],
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      child: Row(
+                        children: [
+                          Text(
+                            item,
+                            style: TextStyle(color: Colorconstant.mainblack),
+                          )
+                        ],
+                      ),
                     ),
                   );
                 },

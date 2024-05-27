@@ -26,7 +26,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     return null;
   }
 
-  Future<bool> insertrecord() async {
+  Future<void> insertrecord() async {
     if (loginusernamecontroller.text.isNotEmpty ||
         passwordconttroller.text.isNotEmpty ||
         emailcontroller.text.isNotEmpty) {
@@ -38,8 +38,44 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           "emailcontroller": emailcontroller.text,
           "passwordconttroller": passwordconttroller.text,
         });
-
-        print(res.body);
+        var response = "success";
+        //  var resp = "WRONG CREDENTIALS";
+        //print("${res.body}${passwordconttroller.text}");
+        print("athulya${res.body}");
+        if (res.body == response) {
+          //  print("Record inserted");
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                "Reset Successful",
+                style: TextStyle(color: Colors.green),
+              ),
+              duration: Duration(seconds: 2),
+            ),
+          );
+          Future.delayed(Duration(milliseconds: 10), () {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+                (route) => false);
+          });
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                "Reset UnSuccessful",
+                style: TextStyle(color: Colors.red),
+              ),
+              duration: Duration(seconds: 2),
+            ),
+          );
+          Future.delayed(Duration(milliseconds: 10), () {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => ForgotPasswordScreen()),
+                (route) => false);
+          });
+        }
 
         // var response = "success";
         // var resp = "WRONG CREDENTIALS";
@@ -60,15 +96,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         //       MaterialPageRoute(builder: (context) => LoginScreen()),
         //       (route) => false);
         // }
-
-        return res.body == "success";
       } catch (e) {
         print(e);
-        return false;
       }
     } else {
       print("please fill all fields");
-      return false;
     }
   }
 
@@ -162,28 +194,30 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       backgroundColor:
                           MaterialStateProperty.all(Colorconstant.darkpurple)),
                   onPressed: () async {
-                    if (_formkey.currentState!.validate()) {
-                      bool success = await insertrecord();
-                      if (success) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text("Reset Successful"),
-                            duration: Duration(seconds: 2),
-                          ),
-                        );
-                        Future.delayed(Duration(seconds: 2), () {
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoginScreen()),
-                              (route) => false);
-                        });
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Reset failed")),
-                        );
-                      }
-                    }
+                    // if (_formkey.currentState!.validate()) {
+                    //   bool success = await insertrecord();
+                    //   if (success) {
+                    //     ScaffoldMessenger.of(context).showSnackBar(
+                    //       SnackBar(
+                    //         content: Text("Reset Successful"),
+                    //         duration: Duration(seconds: 2),
+                    //       ),
+                    //     );
+                    //     Future.delayed(Duration(seconds: 2), () {
+                    //       Navigator.pushAndRemoveUntil(
+                    //           context,
+                    //           MaterialPageRoute(
+                    //               builder: (context) => LoginScreen()),
+                    //           (route) => false);
+                    //     });
+                    //   } else {
+                    //     ScaffoldMessenger.of(context).showSnackBar(
+                    //       SnackBar(content: Text("Reset failed")),
+                    //     );
+                    //   }
+                    // }
+                    _formkey.currentState!.validate();
+                    insertrecord();
                   },
                   child: Text(
                     "Reset",
