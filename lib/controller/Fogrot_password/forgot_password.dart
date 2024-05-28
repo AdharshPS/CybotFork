@@ -15,6 +15,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   TextEditingController loginusernamecontroller = TextEditingController();
   TextEditingController passwordconttroller = TextEditingController();
   TextEditingController conpasswordcontroller = TextEditingController();
+  bool passwordVisible = false;
   final _formkey = GlobalKey<FormState>();
   String? validateEmail(String? email) {
     RegExp emailRegex = RegExp(
@@ -76,26 +77,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 (route) => false);
           });
         }
-
-        // var response = "success";
-        // var resp = "WRONG CREDENTIALS";
-
-        // if (res.body == response) {
-        //   print("Record inserted");
-        //   Navigator.pushAndRemoveUntil(
-        //       context,
-        //       MaterialPageRoute(builder: (context) => LoginScreen()),
-        //       (route) => false);
-        //   passwordconttroller.clear();
-        //   loginusernamecontroller.clear();
-        //   emailcontroller.clear();
-        // }
-        // if (res.body == resp) {
-        //   Navigator.pushAndRemoveUntil(
-        //       context,
-        //       MaterialPageRoute(builder: (context) => LoginScreen()),
-        //       (route) => false);
-        // }
       } catch (e) {
         print(e);
       }
@@ -155,17 +136,31 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
                 child: TextFormField(
-                    controller: passwordconttroller,
-                    decoration: const InputDecoration(
-                        hintText: "Enter Password",
-                        border: OutlineInputBorder()),
-                    validator: (value) {
-                      if (value != null && value.length >= 6) {
-                        return null;
-                      } else {
-                        return "Password is not Sufficient to secure your Account";
-                      }
-                    }),
+                  obscureText: passwordVisible,
+                  controller: passwordconttroller,
+                  decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            passwordVisible = !passwordVisible;
+                          });
+                        },
+                        icon: Icon(passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off),
+                      ),
+                      hintText: "Password",
+                      border: OutlineInputBorder()),
+                  validator: (value) {
+                    if (value != null && value.length >= 7) {
+                      return null;
+                    } else {
+                      return "Password is Required";
+                    }
+                  },
+                  keyboardType: TextInputType.visiblePassword,
+                  textInputAction: TextInputAction.done,
+                ),
               ),
               SizedBox(
                 height: 15,

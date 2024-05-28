@@ -9,6 +9,7 @@ import 'package:hive/hive.dart';
 import 'package:uri_launching/controller/Fogrot_password/forgot_password.dart';
 import 'package:uri_launching/utilis/Authentication.dart';
 import 'package:uri_launching/utilis/color_constant/color_constant.dart';
+import 'package:uri_launching/view/bottom_navigationbar_screens/bottom_navigation_screeb.dart';
 import 'package:uri_launching/view/dashborad_screen/dashboard_screen.dart';
 
 import 'package:uri_launching/view/signup_screen/signup_screen.dart';
@@ -56,8 +57,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> insertrecord() async {
-    if (loginusernamecontroller.text != "" ||
-        loginpasswordcontroller.text != "") {
+    if (loginusernamecontroller.text.isNotEmpty &&
+        loginpasswordcontroller.text.isNotEmpty) {
       try {
         String uri =
             "https://cybot.avanzosolutions.in/cybot/insert_recordtest.php";
@@ -65,39 +66,56 @@ class _LoginScreenState extends State<LoginScreen> {
           "loginusernamecontroller": loginusernamecontroller.text,
           "loginpasswordcontroller": loginpasswordcontroller.text
         });
-        // print("athulya" + res.body);
         var response = "success";
         var resp = "WRONG CREDENTIALS";
 
         if (res.body == response) {
           print("Record inserted");
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => DashboardScreen()),
-              (route) => false);
+          // Save the login state
+          box1.put('isLoggedIn', true);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                "Login Successfully",
+                style: TextStyle(color: Colors.green),
+              ),
+              duration: Duration(milliseconds: 15),
+            ),
+          );
+          Future.delayed(Duration(milliseconds: 10), () {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => BottomNavigationScreen()),
+                (route) => false);
+          });
           loginpasswordcontroller.clear();
           loginusernamecontroller.clear();
-        }
-        if (res.body == resp) {
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => LoginScreen()),
-              (route) => false);
+        } else if (res.body == resp) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                "Login Unsuccessful",
+                style: TextStyle(color: Colors.red),
+              ),
+              duration: Duration(seconds: 2),
+            ),
+          );
         }
       } catch (e) {
         print(e);
       }
     } else {
-      print("please fill all fields");
+      print("Please fill all fields");
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colorconstant.pantonebackground,
+      backgroundColor: Colorconstant.mainwhite,
       appBar: AppBar(
-        backgroundColor: Colorconstant.pantonemessage,
+        backgroundColor: Colorconstant.pantonebackground,
         actions: [Text("Version 1.0.0")],
       ),
       body: SingleChildScrollView(
@@ -236,7 +254,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => DashboardScreen()));
+                              builder: (context) => BottomNavigationScreen()));
                     }
                   },
                   icon: Icon(

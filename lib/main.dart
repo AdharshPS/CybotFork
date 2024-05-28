@@ -1,40 +1,26 @@
 import 'package:flutter/material.dart';
-//import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:hive_flutter/adapters.dart';
-import 'package:uri_launching/view/splash_screen/splash_screen.dart';
+import 'package:uri_launching/view/bottom_navigationbar_screens/bottom_navigation_screeb.dart';
+import 'package:uri_launching/view/login_screen/login_screen.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  await Hive.openBox('logindata');
-  runApp(MyApp());
+  Box box = await Hive.openBox('logindata');
+  bool isLoggedIn = box.get('isLoggedIn', defaultValue: false);
+  runApp(MyApp(isLoggedIn: isLoggedIn));
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  final bool isLoggedIn;
+
+  MyApp({required this.isLoggedIn});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: SplashScreen());
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: isLoggedIn ? BottomNavigationScreen() : LoginScreen(),
+    );
   }
-
-//   final darkTheme = ThemeData(
-//     primarySwatch: Colors.grey,
-//     primaryColor: Colors.black,
-//     brightness: Brightness.dark,
-//     backgroundColor: const Color(0xFF212121),
-//     accentColor: Colors.white,
-//     accentIconTheme: IconThemeData(color: Colors.black),
-//     dividerColor: Colors.black12,
-//   );
-
-//   final lightTheme = ThemeData(
-//     primarySwatch: Colors.grey,
-//     primaryColor: Colors.white,
-//     brightness: Brightness.light,
-//     backgroundColor: const Color(0xFFE5E5E5),
-//     accentColor: Colors.black,
-//     accentIconTheme: IconThemeData(color: Colors.white),
-//     dividerColor: Colors.white54,
-//   );
 }
