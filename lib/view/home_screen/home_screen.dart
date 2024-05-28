@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
             height: 100,
           ),
           Text(
-            "Random Topics",
+            "Intresting Facts",
             style: TextStyle(
                 fontWeight: FontWeight.bold, color: Colors.black, fontSize: 30),
           ),
