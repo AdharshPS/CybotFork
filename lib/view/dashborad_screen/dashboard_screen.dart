@@ -1,18 +1,10 @@
-// import 'dart:convert';
-import 'dart:developer';
-// import 'dart:html';
-
-//import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:uri_launching/controller/suggestion_list/suggestion_list.dart';
-
 import 'package:uri_launching/utilis/color_constant/color_constant.dart';
-
-import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'dart:developer';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -28,6 +20,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   String _text = '';
   dynamic res = "";
   String answers = "";
+  double _fontSize = 16.0; // Default font size
+
   Future<String> askquestion() async {
     String uri = "https://cybot.avanzosolutions.in/cybot/search_text.php";
     try {
@@ -37,9 +31,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     } catch (e) {
       log(e.toString());
     }
-    // log(res.body);
     String data = res.body;
-    // log(data);
     return data;
   }
 
@@ -82,45 +74,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colorconstant.pantonemessage,
-        actions: [Text("Version 1.0.0")],
-      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
-              height: 10,
-            ),
-            Image.asset(
-              "assets/images/avzlogo.png",
-              height: 100,
-            ),
-            SizedBox(
-              height: 18,
-            ),
+            SizedBox(height: 10),
+            Image.asset("assets/images/avzlogo.png", height: 100),
+            SizedBox(height: 18),
             Center(
               child: Text(
                 "CYBERHULK",
                 style: TextStyle(
-                    color: Colorconstant.darkpurple,
-                    fontSize: 35,
-                    fontWeight: FontWeight.w900),
+                  color: Colorconstant.darkpurple,
+                  fontSize: 35,
+                  fontWeight: FontWeight.w900,
+                ),
               ),
             ),
-            SizedBox(
-              height: 20,
-            ),
+            SizedBox(height: 20),
             Padding(
-              padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
               child: TypeAheadField(
                 textFieldConfiguration: TextFieldConfiguration(
                   controller: askquestioncontroller,
                   decoration: InputDecoration(
                     suffixIcon: IconButton(
-                      icon: Icon(
-                        _isListening ? Icons.mic : Icons.mic_none,
-                      ),
+                      icon: Icon(_isListening ? Icons.mic : Icons.mic_none),
                       onPressed: _listen,
                     ),
                     border: OutlineInputBorder(),
@@ -133,70 +111,73 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       .toList();
                 },
                 itemBuilder: (context, suggestion) {
-                  return ListTile(
-                    title: Text(suggestion),
-                  );
+                  return ListTile(title: Text(suggestion));
                 },
                 onSuggestionSelected: (suggestion) {
                   askquestioncontroller.text = suggestion;
                 },
               ),
             ),
-            SizedBox(
-              height: 15,
-            ),
+            SizedBox(height: 15),
             ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(Colorconstant.darkpurple),
-                    minimumSize: MaterialStateProperty.all(Size(300, 70))),
-                onPressed: () async {
-                  String response = await askquestion();
-                  answers = response;
-                  log("this will be printed on ui ==============$answers");
-                  setState(() {});
-                  askquestioncontroller.clear();
-                },
-                child: Text(
-                  "Ask",
-                  style: TextStyle(
-                      fontSize: 25, color: Colorconstant.pantonemessage),
-                )),
-
-            // ElevatedButton(
-            //     style: ButtonStyle(
-            //         backgroundColor:
-            //             MaterialStateProperty.all(Colorconstant.darkpurple),
-            //         minimumSize: MaterialStateProperty.all(Size(300, 70))),
-            //     onPressed: () {
-            //       _launchURL(
-            //         "www.chat.avanzosolutions.in",
-            //       );
-            //     },
-            // child: Text(
-            //   "Chat with Cyberhulk",
-            //   style: TextStyle(color: Colorconstant.pantonebackground),
-            // )),
-            SizedBox(
-              height: 10,
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Colorconstant.darkpurple),
+                minimumSize: MaterialStateProperty.all(Size(300, 70)),
+              ),
+              onPressed: () async {
+                String response = await askquestion();
+                answers = response;
+                log("this will be printed on ui ==============$answers");
+                setState(() {});
+                askquestioncontroller.clear();
+              },
+              child: Text(
+                "Ask",
+                style: TextStyle(
+                  fontSize: 25,
+                  color: Colorconstant.pantonemessage,
+                ),
+              ),
             ),
+            SizedBox(height: 10),
             Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
-              child: Container(child: Text(answers)),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.zoom_out),
+                        onPressed: () {
+                          setState(() {
+                            if (_fontSize > 12)
+                              _fontSize -= 2; // Decrease font size
+                          });
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.zoom_in),
+                        onPressed: () {
+                          setState(() {
+                            if (_fontSize < 30)
+                              _fontSize += 2; // Increase font size
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  Text(
+                    answers,
+                    style: TextStyle(fontSize: _fontSize),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
       ),
     );
   }
-
-//   Future<void> _launchURL(String url) async {
-//     final Uri uri = Uri(scheme: "https", host: url);
-//     if (!await launchUrl(
-//       uri,
-//       mode: LaunchMode.inAppWebView,
-//     )) {
-//       throw "Can not launch url";
-//     }
-//   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uri_launching/utilis/color_constant/color_constant.dart';
+import 'package:uri_launching/utilis/theme_swich/theme_switch.dart';
 import 'package:uri_launching/view/about_avanzo_screen/about_avanzo_screen.dart';
 import 'package:uri_launching/view/about_cyberhulk_screen/about_cyberhulk_screen.dart';
 import 'package:uri_launching/view/dashborad_screen/dashboard_screen.dart';
@@ -16,6 +17,7 @@ class BottomNavigationScreen extends StatefulWidget {
 
 class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   int indexnum = 0;
+
   List screens = [
     HomeScreen(),
     DashboardScreen(),
@@ -25,6 +27,20 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colorconstant.pantonemessage,
+        toolbarHeight: 68,
+        actions: [
+          Text(
+            "Version 1.0.0",
+            style: TextStyle(color: Colorconstant.mainblack),
+          ),
+          ThemeSwitch(),
+          SizedBox(
+            width: 15,
+          )
+        ],
+      ),
       body: screens[indexnum],
       bottomNavigationBar: BottomNavigationBar(
           onTap: (value) {
