@@ -113,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colorconstant.mainwhite,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colorconstant.pantonebackground,
         actions: [Text("Version 1.0.0")],
@@ -143,9 +143,12 @@ class _LoginScreenState extends State<LoginScreen> {
               Padding(
                 padding: const EdgeInsets.all(12),
                 child: TextFormField(
+                    style: TextStyle(color: Colors.black),
                     controller: loginusernamecontroller,
                     decoration: InputDecoration(
-                        hintText: "Username", border: OutlineInputBorder()),
+                        hintText: "Username",
+                        hintStyle: TextStyle(color: Colors.black54),
+                        border: OutlineInputBorder()),
                     validator: (value) {
                       if (value != null && value.length >= 5) {
                         return null;
@@ -160,6 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Padding(
                 padding: const EdgeInsets.all(12),
                 child: TextFormField(
+                  style: TextStyle(color: Colors.black),
                   obscureText: passwordVisible,
                   controller: loginpasswordcontroller,
                   decoration: InputDecoration(
@@ -174,6 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             : Icons.visibility_off),
                       ),
                       hintText: "Password",
+                      hintStyle: TextStyle(color: Colors.black54),
                       border: OutlineInputBorder()),
                   validator: (value) {
                     if (value != null && value.length >= 7) {
@@ -213,8 +218,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                         child: Text(
                           "Forgot Password",
-                          style:
-                              TextStyle(decoration: TextDecoration.underline),
+                          style: TextStyle(
+                              color: Colorconstant.darkpurple,
+                              decoration: TextDecoration.underline),
                         )),
                   ),
                 ],
@@ -227,7 +233,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {
                     insertrecord();
                     _formkey.currentState!.validate();
-                    login();
+
                     // if (_formkey.currentState!.validate()) {
                     //   insertrecord();
                     //   ScaffoldMessenger.of(context).showSnackBar(
@@ -245,7 +251,10 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 height: 5,
               ),
-              Text("Login with Biometrics"),
+              Text(
+                "Login with Biometrics",
+                style: TextStyle(color: Colorconstant.mainblack),
+              ),
               IconButton(
                   onPressed: () async {
                     bool auth = await Authentication.authentication();
@@ -259,12 +268,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   icon: Icon(
                     Icons.fingerprint,
+                    color: Colorconstant.mainblack,
                     size: 50,
                   )),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Don't have an account?"),
+                  Text(
+                    "Don't have an account?",
+                    style: TextStyle(color: Colorconstant.mainblack),
+                  ),
                   TextButton(
                       onPressed: () {
                         Navigator.push(
@@ -274,7 +287,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       child: Text(
                         "Signup",
-                        style: TextStyle(decoration: TextDecoration.underline),
+                        style: TextStyle(
+                            color: Colorconstant.darkpurple,
+                            decoration: TextDecoration.underline),
                       ))
                 ],
               ),
@@ -298,12 +313,5 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-  }
-
-  void login() {
-    if (isChecked) {
-      box1.put('email', loginusernamecontroller.value.text);
-      box1.put('pass', loginpasswordcontroller.value.text);
-    }
   }
 }

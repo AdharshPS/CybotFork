@@ -1,11 +1,9 @@
-//import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:uri_launching/utilis/color_constant/color_constant.dart';
-//import 'package:uri_launching/view/authorization_screen/authorization_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:uri_launching/view/dashborad_screen/dashboard_screen.dart';
 import 'package:uri_launching/view/login_screen/login_screen.dart';
+import 'package:uri_launching/view/terms_and_conditions_screen/terms_and_conditions_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -23,6 +21,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController passwordcontroller = TextEditingController();
   TextEditingController conpasswordcontroller = TextEditingController();
   final _formkey = GlobalKey<FormState>();
+  bool passwordVisible = false;
 
   String? validateEmail(String? email) {
     RegExp emailRegex = RegExp(
@@ -78,7 +77,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colorconstant.pantonebackground,
+      backgroundColor: Colorconstant.mainwhite,
       appBar: AppBar(
         backgroundColor: Colorconstant.pantonemessage,
         actions: [const Text("Version 1.0.0")],
@@ -88,10 +87,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           key: _formkey,
           child: Column(
             children: [
-              // Image.asset(
-              //   "assets/images/Animation - 1715055684151.gif",
-              //   height: 70,
-              // ),
               const SizedBox(
                 height: 10,
               ),
@@ -108,11 +103,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
                 child: TextFormField(
+                  style: TextStyle(color: Colors.black),
                   controller: firstnamecontroller,
                   decoration: const InputDecoration(
-                      hintText: "First name", border: OutlineInputBorder()),
+                    hintText: "First name",
+                    hintStyle: TextStyle(
+                        color:
+                            Colors.black54), // Changed hint text color to black
+                    border: OutlineInputBorder(),
+                  ),
                   validator: (name) => name!.length < 3
-                      ? "name should be atleast 5 characters"
+                      ? "Name should be at least 3 characters"
                       : null,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
@@ -120,17 +121,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
                 child: TextFormField(
+                  style: TextStyle(color: Colors.black),
                   controller: lastnamecontroller,
                   decoration: const InputDecoration(
-                      hintText: "Last Name", border: OutlineInputBorder()),
+                    hintText: "Last Name",
+                    hintStyle: TextStyle(
+                        color:
+                            Colors.black54), // Changed hint text color to black
+                    border: OutlineInputBorder(),
+                  ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
                 child: TextFormField(
+                    style: TextStyle(color: Colors.black),
                     controller: phnumbercontroller,
                     decoration: const InputDecoration(
-                        hintText: "Phone Number", border: OutlineInputBorder()),
+                      hintText: "Phone Number",
+                      hintStyle: TextStyle(
+                          color: Colors
+                              .black54), // Changed hint text color to black
+                      border: OutlineInputBorder(),
+                    ),
                     validator: (value) {
                       if (value != null && value.length >= 7) {
                         return null;
@@ -142,18 +155,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
                 child: TextFormField(
+                  style: TextStyle(color: Colors.black),
                   controller: mailidcontroller,
                   decoration: const InputDecoration(
-                      hintText: "Email Id", border: OutlineInputBorder()),
+                    hintText: "Email Id",
+                    hintStyle: TextStyle(
+                        color:
+                            Colors.black54), // Changed hint text color to black
+                    border: OutlineInputBorder(),
+                  ),
                   validator: validateEmail,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
                 child: TextFormField(
+                    style: TextStyle(color: Colors.black),
                     controller: usernamecontroller,
                     decoration: const InputDecoration(
-                        hintText: "User Name", border: OutlineInputBorder()),
+                      hintText: "User Name",
+                      hintStyle: TextStyle(
+                          color: Colors
+                              .black54), // Changed hint text color to black
+                      border: OutlineInputBorder(),
+                    ),
                     validator: (value) {
                       if (value != null && value.length >= 5) {
                         return null;
@@ -165,30 +190,51 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
                 child: TextFormField(
-                    controller: passwordcontroller,
-                    decoration: const InputDecoration(
-                        hintText: "Enter Password",
-                        border: OutlineInputBorder()),
-                    validator: (value) {
-                      if (value != null && value.length >= 6) {
-                        return null;
-                      } else {
-                        return "Password is not Sufficient to secure your Account";
-                      }
-                    }),
+                  style: TextStyle(color: Colors.black),
+                  obscureText: passwordVisible,
+                  controller: passwordcontroller,
+                  decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            passwordVisible = !passwordVisible;
+                          });
+                        },
+                        icon: Icon(passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off),
+                      ),
+                      hintText: "Password",
+                      hintStyle: TextStyle(color: Colors.black54),
+                      border: OutlineInputBorder()),
+                  validator: (value) {
+                    if (value != null && value.length >= 7) {
+                      return null;
+                    } else {
+                      return "Password is Required";
+                    }
+                  },
+                  keyboardType: TextInputType.visiblePassword,
+                  textInputAction: TextInputAction.done,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
                 child: TextFormField(
+                    style: TextStyle(color: Colors.black),
                     controller: conpasswordcontroller,
-                    decoration: InputDecoration(
-                        hintText: "Confirm Pssword",
-                        border: OutlineInputBorder()),
+                    decoration: const InputDecoration(
+                      hintText: "Confirm Password",
+                      hintStyle: TextStyle(
+                          color: Colors
+                              .black54), // Changed hint text color to black
+                      border: OutlineInputBorder(),
+                    ),
                     validator: (value) {
                       if (value != null && value == passwordcontroller.text) {
                         return null;
                       } else {
-                        return "Password is not match";
+                        return "Password does not match";
                       }
                     }),
               ),
@@ -207,14 +253,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => LoginScreen()),
+                              builder: (context) => TermsConditionsScreen()),
                           (route) => false);
-                      // mailidcontroller.clear();
-                      // firstnamecontroller.clear();
-                      // lastnamecontroller.clear();
-                      // passwordcontroller.clear();
-                      // phnumbercontroller.clear();
-                      // usernamecontroller.clear();
                     }
                   },
                   child: const Text(

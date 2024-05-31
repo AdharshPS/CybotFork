@@ -88,7 +88,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colorconstant.pantonebackground,
         title: Text(
           "Forgot Password",
           style: TextStyle(
@@ -107,9 +109,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
                 child: TextFormField(
+                    style: TextStyle(color: Colors.black),
                     controller: loginusernamecontroller,
                     decoration: const InputDecoration(
-                        hintText: "User Name", border: OutlineInputBorder()),
+                        hintText: "User Name",
+                        hintStyle: TextStyle(color: Colors.black54),
+                        border: OutlineInputBorder()),
                     validator: (value) {
                       if (value != null && value.length >= 5) {
                         return null;
@@ -124,9 +129,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
                 child: TextFormField(
+                  style: TextStyle(color: Colors.black),
                   //   controller: mailidcontroller,
                   decoration: const InputDecoration(
-                      hintText: "Email Id", border: OutlineInputBorder()),
+                      hintText: "Email Id",
+                      hintStyle: TextStyle(color: Colors.black54),
+                      border: OutlineInputBorder()),
                   validator: validateEmail,
                 ),
               ),
@@ -136,6 +144,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
                 child: TextFormField(
+                  style: TextStyle(color: Colors.black),
                   obscureText: passwordVisible,
                   controller: passwordconttroller,
                   decoration: InputDecoration(
@@ -150,6 +159,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             : Icons.visibility_off),
                       ),
                       hintText: "Password",
+                      hintStyle: TextStyle(color: Colors.black54),
                       border: OutlineInputBorder()),
                   validator: (value) {
                     if (value != null && value.length >= 7) {
@@ -168,9 +178,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
                 child: TextFormField(
+                    style: TextStyle(color: Colors.black),
                     controller: conpasswordcontroller,
                     decoration: InputDecoration(
                         hintText: "Confirm Pssword",
+                        hintStyle: TextStyle(color: Colors.black54),
                         border: OutlineInputBorder()),
                     validator: (value) {
                       if (value != null && value == passwordconttroller.text) {

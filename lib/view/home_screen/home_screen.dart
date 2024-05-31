@@ -14,8 +14,6 @@ import '../../utilis/patch.dart';
 import '../../utilis/ransomware.dart';
 import '../../utilis/robotics.dart';
 import '../../utilis/security_incident.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,8 +23,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String newsData = "No news available";
-
   void _setTextFieldText(Widget targetscreen) {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => targetscreen));
@@ -51,96 +47,74 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Future<void> _fetchNewsData() async {
-    final response = await http.get(Uri.parse(
-        'https://cybot.avanzosolutions.in/cybot/newsimagedisplay.php'));
-
-    if (response.statusCode == 200) {
-      setState(() {
-        newsData = response.body;
-      });
-    } else {
-      setState(() {
-        newsData = 'Failed to load news';
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 50,
-            ),
-            Text(
-              "Interesting Facts",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colorconstant.darkpurple,
-                  fontSize: 30),
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildClickableContainer("Phishing", PhishingText()),
-                _buildClickableContainer("Cyber security", CyberSecuritytext()),
-                _buildClickableContainer("Malware", Malwaretext()),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildClickableContainer("Hacking", Hackingtext()),
-                _buildClickableContainer("Data breach", Databreach()),
-                _buildClickableContainer("DDoS attack", DDOSAttacktext()),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildClickableContainer("Firewall", FireWalltext()),
-                _buildClickableContainer("Patch", Patchtext()),
-                _buildClickableContainer("AI", AItext()),
-                _buildClickableContainer("Encryption", Encryptiontext())
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildClickableContainer(
-                    "Security incident", Securityincidenttext()),
-                _buildClickableContainer("Robotics", Roboticstext()),
-                _buildClickableContainer("Ransomware", Ransomeware()),
-              ],
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            ElevatedButton(
-              onPressed: _fetchNewsData,
-              child: Text("Get latest news here"),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(newsData),
-          ],
-        ),
+      body: Column(
+        children: [
+          SizedBox(
+            height: 100,
+          ),
+          Text(
+            "Intresting Facts",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colorconstant.darkpurple,
+                fontSize: 30),
+          ),
+          SizedBox(
+            height: 50,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildClickableContainer("Phishing", PhishingText()),
+              _buildClickableContainer("Cyber security", CyberSecuritytext()),
+              _buildClickableContainer("Malware", Malwaretext()),
+            ],
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildClickableContainer("Hacking", Hackingtext()),
+              _buildClickableContainer("Data breach", Databreach()),
+              _buildClickableContainer("DDoS attack", DDOSAttacktext()),
+            ],
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildClickableContainer("Firewall", FireWalltext()),
+              _buildClickableContainer("Patch", Patchtext()),
+              _buildClickableContainer("AI", AItext()),
+              _buildClickableContainer("Encryption", Encryptiontext())
+            ],
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildClickableContainer(
+                  "Security incident", Securityincidenttext()),
+              _buildClickableContainer("Robotics", Roboticstext()),
+              _buildClickableContainer("Ransomware", Ransomeware()),
+            ],
+          ),
+          SizedBox(
+            height: 25,
+          ),
+          SizedBox(
+            height: 10,
+          ),
+        ],
       ),
     );
   }

@@ -128,7 +128,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               onPressed: () async {
                 String response = await askquestion();
                 answers = response;
-                log("this will be printed on ui ==============$answers");
+                log("this will be printed on ui $answers");
                 setState(() {});
                 askquestioncontroller.clear();
               },
