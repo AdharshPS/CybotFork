@@ -77,7 +77,14 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
               icon: Icon(Icons.search), label: "Ask Question"),
           BottomNavigationBarItem(
               icon: Icon(Icons.animation_outlined), label: "Cyberhulk"),
-          BottomNavigationBarItem(icon: Icon(Icons.newspaper), label: "News"),
+          BottomNavigationBarItem(
+              icon: ImageIcon(
+                AssetImage(
+                  "assets/images/Animation - 1717225115801 (1).gif",
+                ),
+                size: 50,
+              ),
+              label: "News"),
           BottomNavigationBarItem(
               icon: Icon(Icons.account_tree), label: "Avanzo"),
         ],
