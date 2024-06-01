@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:uri_launching/view/signup_screen/signup_screen.dart';
-import 'package:uri_launching/view/login_screen/login_screen.dart';
 
-class TermsConditionsScreen extends StatelessWidget {
+class Termsforread extends StatefulWidget {
+  @override
+  State<Termsforread> createState() => _TermsforreadState();
+}
+
+class _TermsforreadState extends State<Termsforread> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,51 +89,7 @@ be bound by the terms and conditions of this agreement. However, the App will no
 responsible for any direct or indirect damages caused without proper usage of the app.
       """,
                   style: TextStyle(fontSize: 16),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () async {
-                        var box = await Hive.openBox('logindata');
-                        box.put('termsAccepted', true);
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LoginScreen()),
-                        );
-                      },
-                      child: Text("Accept"),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text("Terms and Conditions Declined"),
-                              content: Text(
-                                  "You have declined the terms and conditions. You cannot use the app without accepting the terms and conditions."),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => LoginScreen()),
-                                    );
-                                  },
-                                  child: Text("OK"),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                      child: Text("Decline"),
-                    ),
-                  ],
-                ),
+                )
               ]),
             )));
   }

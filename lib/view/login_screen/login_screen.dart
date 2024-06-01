@@ -1,17 +1,10 @@
-//import 'dart:convert';
-
-//import 'dart:ffi';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:uri_launching/controller/Fogrot_password/forgot_password.dart';
 import 'package:uri_launching/utilis/Authentication.dart';
 import 'package:uri_launching/utilis/color_constant/color_constant.dart';
 import 'package:uri_launching/view/bottom_navigationbar_screens/bottom_navigation_screeb.dart';
 import 'package:uri_launching/view/dashborad_screen/dashboard_screen.dart';
-
 import 'package:uri_launching/view/signup_screen/signup_screen.dart';
 import 'package:http/http.dart' as http;
 
@@ -32,7 +25,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     createOpenBox();
     passwordVisible = true;
@@ -40,7 +32,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void createOpenBox() async {
     box1 = await Hive.openBox('logindata');
-    getdata();
+    checkLoginStatus();
+  }
+
+  void checkLoginStatus() {
+    if (box1.get('isLoggedIn') == true) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => BottomNavigationScreen()),
+      );
+    } else {
+      getdata();
+    }
   }
 
   void getdata() async {
@@ -71,18 +74,22 @@ class _LoginScreenState extends State<LoginScreen> {
 
         if (res.body == response) {
           print("Record inserted");
-          // Save the login state
+          // Save the login state and credentials
           box1.put('isLoggedIn', true);
+          if (isChecked) {
+            box1.put('email', loginusernamecontroller.text);
+            box1.put('pass', loginpasswordcontroller.text);
+          }
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
                 "Login Successfully",
                 style: TextStyle(color: Colors.green),
               ),
-              duration: Duration(milliseconds: 15),
+              duration: Duration(milliseconds: 1500),
             ),
           );
-          Future.delayed(Duration(milliseconds: 10), () {
+          Future.delayed(Duration(milliseconds: 1500), () {
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
@@ -193,7 +200,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                // crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     "Remember Me",
@@ -202,7 +208,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Checkbox(
                     value: isChecked,
                     onChanged: (value) {
-                      isChecked = !isChecked;
+                      isChecked = value!;
                       setState(() {});
                     },
                   ),
@@ -231,17 +237,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       backgroundColor:
                           MaterialStateProperty.all(Colorconstant.darkpurple)),
                   onPressed: () {
-                    insertrecord();
-                    _formkey.currentState!.validate();
-
-                    // if (_formkey.currentState!.validate()) {
-                    //   insertrecord();
-                    //   ScaffoldMessenger.of(context).showSnackBar(
-                    //       SnackBar(content: Text("Login Successful")));
-                    // } else {
-                    //   ScaffoldMessenger.of(context).showSnackBar(
-                    //       SnackBar(content: Text("Login failed")));
-                    // }
+                    if (_formkey.currentState!.validate()) {
+                      insertrecord();
+                    }
                   },
                   child: Text(
                     "Login",

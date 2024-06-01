@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:uri_launching/utilis/color_constant/color_constant.dart';
 import 'package:uri_launching/view/login_screen/login_screen.dart';
+import 'package:uri_launching/view/terms_and_conditions_screen/terms_and_conditions_screen.dart';
+import 'package:uri_launching/view/terms_and_conditions_screen/terms_for_read.dart';
 
 class AboutCyberHulkScreen extends StatefulWidget {
   const AboutCyberHulkScreen({super.key});
@@ -62,38 +64,52 @@ class _AboutCyberHulkScreenState extends State<AboutCyberHulkScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          OutlinedButton(
-            style: ButtonStyle(
-              side: MaterialStateProperty.all(
-                BorderSide(color: Colorconstant.pantonebackground),
-              ),
-            ),
-            onPressed: logout,
-            child: Text("Logout"),
-          )
-        ],
         title: Text("CyberHulk"),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20),
-          child: AnimatedBuilder(
-            animation: _typewriterAnimation,
-            builder: (context, child) {
-              String textToShow = (_typewriterAnimation.value <= _text1.length)
-                  ? _text1.substring(0, _typewriterAnimation.value)
-                  : _text1 +
-                      _text2.substring(
-                          0, _typewriterAnimation.value - _text1.length);
-              return Text(
-                textToShow,
-                textAlign: TextAlign.justify,
-                style: TextStyle(
-                    color: Colorconstant.pantonemessage, fontSize: 16.0),
-              );
-            },
+          child: Column(
+            children: [
+              AnimatedBuilder(
+                animation: _typewriterAnimation,
+                builder: (context, child) {
+                  String textToShow = (_typewriterAnimation.value <=
+                          _text1.length)
+                      ? _text1.substring(0, _typewriterAnimation.value)
+                      : _text1 +
+                          _text2.substring(
+                              0, _typewriterAnimation.value - _text1.length);
+                  return Text(
+                    textToShow,
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(
+                        color: Colorconstant.pantonemessage, fontSize: 16.0),
+                  );
+                },
+              ),
+              TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Termsforread()));
+                  },
+                  child: Text("Terms and conditions")),
+              SizedBox(
+                height: 25,
+              ),
+              OutlinedButton(
+                style: ButtonStyle(
+                  side: MaterialStateProperty.all(
+                    BorderSide(color: Colorconstant.pantonebackground),
+                  ),
+                ),
+                onPressed: logout,
+                child: Text("Logout"),
+              )
+            ],
           ),
         ),
       ),
