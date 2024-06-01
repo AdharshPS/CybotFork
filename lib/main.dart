@@ -6,6 +6,7 @@ import 'package:uri_launching/view/login_screen/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:uri_launching/view/splash_screen/splash_screen.dart';
 import 'view/login_screen/login_screen.dart';
 
 void main() async {
@@ -32,12 +33,13 @@ class MyApp extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      themeMode: themeProvider.themeMode,
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
-      home: isLoggedIn ? BottomNavigationScreen() : LoginScreen(),
-    );
+        debugShowCheckedModeBanner: false,
+        themeMode: themeProvider.themeMode,
+        theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
+        home: SplashScreen(
+          isLoggedIn: isLoggedIn,
+        ));
   }
 }
 

@@ -4,11 +4,13 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:uri_launching/utilis/color_constant/color_constant.dart';
+import 'package:uri_launching/view/bottom_navigationbar_screens/bottom_navigation_screeb.dart';
 import 'package:uri_launching/view/login_screen/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  const SplashScreen({super.key, required this.isLoggedIn});
 
+  final bool isLoggedIn;
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
@@ -20,7 +22,11 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(Duration(seconds: 3), () {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => LoginScreen()));
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                widget.isLoggedIn ? BottomNavigationScreen() : LoginScreen(),
+          ));
     });
   }
 
