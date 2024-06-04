@@ -51,41 +51,44 @@ class _SplashScreenState extends State<SplashScreen> {
       // ),
       body: Padding(
         padding: const EdgeInsets.only(top: 100),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Center(
-                  child: Image.asset(
-                "assets/images/avzlogo.png",
-                height: 200,
-              )),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                "CYBERHULK",
-                style: TextStyle(
-                    color: Colorconstant.mainblack,
-                    fontSize: 50,
-                    fontWeight: FontWeight.w600),
-              ),
-              SizedBox(
-                height: 270,
-              ),
-              Container(
-                color: Colorconstant.mainblack,
-                height: 50,
-                width: double.infinity,
-                child: Center(
-                  child: Text(
-                    "Developed by Avanzo Cyber Security Solutions",
-                    style:
-                        TextStyle(fontSize: 10, color: Colorconstant.mainwhite),
-                  ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              children: [
+                Center(
+                    child: Image.asset(
+                  "assets/images/avzlogo.png",
+                  height: 200,
+                )),
+                SizedBox(
+                  height: 20,
                 ),
-              )
-            ],
-          ),
+                Text(
+                  "CYBERHULK",
+                  style: TextStyle(
+                      color: Colorconstant.mainblack,
+                      fontSize: 50,
+                      fontWeight: FontWeight.w600),
+                ),
+                SizedBox(
+                  height: 270,
+                ),
+              ],
+            ),
+            Container(
+              color: Colorconstant.mainblack,
+              height: 50,
+              width: double.infinity,
+              child: Center(
+                child: Text(
+                  "Developed by Avanzo Cyber Security Solutions",
+                  style:
+                      TextStyle(fontSize: 10, color: Colorconstant.mainwhite),
+                ),
+              ),
+            )
+          ],
         ),
       ),
     );

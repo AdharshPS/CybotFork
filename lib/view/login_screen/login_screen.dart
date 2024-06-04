@@ -126,173 +126,181 @@ class _LoginScreenState extends State<LoginScreen> {
         actions: [Text("Version 1.0.0")],
       ),
       body: SingleChildScrollView(
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Form(
           key: _formkey,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(
-                height: 30,
-              ),
-              Image.asset(
-                "assets/images/avzlogo.png",
-                height: 100,
-              ),
-              Text(
-                "WELCOME",
-                style: TextStyle(
-                    color: Colorconstant.darkpurple,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 40),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(12),
-                child: TextFormField(
-                    style: TextStyle(color: Colors.black),
-                    controller: loginusernamecontroller,
-                    decoration: InputDecoration(
-                        hintText: "Username",
-                        hintStyle: TextStyle(color: Colors.black54),
-                        border: OutlineInputBorder()),
-                    validator: (value) {
-                      if (value != null && value.length >= 5) {
-                        return null;
-                      } else {
-                        return "Username is Required";
-                      }
-                    }),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(12),
-                child: TextFormField(
-                  style: TextStyle(color: Colors.black),
-                  obscureText: passwordVisible,
-                  controller: loginpasswordcontroller,
-                  decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            passwordVisible = !passwordVisible;
-                          });
-                        },
-                        icon: Icon(passwordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off),
-                      ),
-                      hintText: "Password",
-                      hintStyle: TextStyle(color: Colors.black54),
-                      border: OutlineInputBorder()),
-                  validator: (value) {
-                    if (value != null && value.length >= 7) {
-                      return null;
-                    } else {
-                      return "Password is Required";
-                    }
-                  },
-                  keyboardType: TextInputType.visiblePassword,
-                  textInputAction: TextInputAction.done,
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Column(
                 children: [
-                  Text(
-                    "Remember Me",
-                    style: TextStyle(color: Colorconstant.mainblack),
+                  SizedBox(
+                    height: 30,
                   ),
-                  Checkbox(
-                    value: isChecked,
-                    onChanged: (value) {
-                      isChecked = value!;
-                      setState(() {});
-                    },
+                  Image.asset(
+                    "assets/images/avzlogo.png",
+                    height: 100,
+                  ),
+                  Text(
+                    "WELCOME",
+                    style: TextStyle(
+                        color: Colorconstant.darkpurple,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 40),
+                  ),
+                  SizedBox(
+                    height: 20,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 60),
-                    child: TextButton(
-                        onPressed: () {
-                          Navigator.push(
+                    padding: const EdgeInsets.all(12),
+                    child: TextFormField(
+                        style: TextStyle(color: Colors.black),
+                        controller: loginusernamecontroller,
+                        decoration: InputDecoration(
+                            hintText: "Username",
+                            hintStyle: TextStyle(color: Colors.black54),
+                            border: OutlineInputBorder()),
+                        validator: (value) {
+                          if (value != null && value.length >= 5) {
+                            return null;
+                          } else {
+                            return "Username is Required";
+                          }
+                        }),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: TextFormField(
+                      style: TextStyle(color: Colors.black),
+                      obscureText: passwordVisible,
+                      controller: loginpasswordcontroller,
+                      decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                passwordVisible = !passwordVisible;
+                              });
+                            },
+                            icon: Icon(passwordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off),
+                          ),
+                          hintText: "Password",
+                          hintStyle: TextStyle(color: Colors.black54),
+                          border: OutlineInputBorder()),
+                      validator: (value) {
+                        if (value != null && value.length >= 7) {
+                          return null;
+                        } else {
+                          return "Password is Required";
+                        }
+                      },
+                      keyboardType: TextInputType.visiblePassword,
+                      textInputAction: TextInputAction.done,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Remember Me",
+                        style: TextStyle(color: Colorconstant.mainblack),
+                      ),
+                      Checkbox(
+                        value: isChecked,
+                        onChanged: (value) {
+                          isChecked = value!;
+                          setState(() {});
+                        },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 60),
+                        child: TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ForgotPasswordScreen()));
+                            },
+                            child: Text(
+                              "Forgot Password",
+                              style: TextStyle(
+                                  color: Colorconstant.darkpurple,
+                                  decoration: TextDecoration.underline),
+                            )),
+                      ),
+                    ],
+                  ),
+                  ElevatedButton(
+                      style: ButtonStyle(
+                          fixedSize: MaterialStateProperty.all(Size(330, 50)),
+                          backgroundColor: MaterialStateProperty.all(
+                              Colorconstant.darkpurple)),
+                      onPressed: () {
+                        if (_formkey.currentState!.validate()) {
+                          insertrecord();
+                        }
+                      },
+                      child: Text(
+                        "Login",
+                        style: TextStyle(
+                            fontSize: 15, color: Colorconstant.mainwhite),
+                      )),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    "Login with Biometrics",
+                    style: TextStyle(color: Colorconstant.mainblack),
+                  ),
+                  IconButton(
+                      onPressed: () async {
+                        bool auth = await Authentication.authentication();
+                        print("can Authenticate :$auth");
+                        if (auth) {
+                          Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      ForgotPasswordScreen()));
-                        },
-                        child: Text(
-                          "Forgot Password",
-                          style: TextStyle(
-                              color: Colorconstant.darkpurple,
-                              decoration: TextDecoration.underline),
-                        )),
-                  ),
-                ],
-              ),
-              ElevatedButton(
-                  style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.all(Size(330, 50)),
-                      backgroundColor:
-                          MaterialStateProperty.all(Colorconstant.darkpurple)),
-                  onPressed: () {
-                    if (_formkey.currentState!.validate()) {
-                      insertrecord();
-                    }
-                  },
-                  child: Text(
-                    "Login",
-                    style:
-                        TextStyle(fontSize: 15, color: Colorconstant.mainwhite),
-                  )),
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                "Login with Biometrics",
-                style: TextStyle(color: Colorconstant.mainblack),
-              ),
-              IconButton(
-                  onPressed: () async {
-                    bool auth = await Authentication.authentication();
-                    print("can Authenticate :$auth");
-                    if (auth) {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => BottomNavigationScreen()));
-                    }
-                  },
-                  icon: Icon(
-                    Icons.fingerprint,
-                    color: Colorconstant.mainblack,
-                    size: 50,
-                  )),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Don't have an account?",
-                    style: TextStyle(color: Colorconstant.mainblack),
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SignUpScreen()));
+                                      BottomNavigationScreen()));
+                        }
                       },
-                      child: Text(
-                        "Signup",
-                        style: TextStyle(
-                            color: Colorconstant.darkpurple,
-                            decoration: TextDecoration.underline),
-                      ))
+                      icon: Icon(
+                        Icons.fingerprint,
+                        color: Colorconstant.mainblack,
+                        size: 50,
+                      )),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Don't have an account?",
+                        style: TextStyle(color: Colorconstant.mainblack),
+                      ),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignUpScreen()));
+                          },
+                          child: Text(
+                            "Signup",
+                            style: TextStyle(
+                                color: Colorconstant.darkpurple,
+                                decoration: TextDecoration.underline),
+                          ))
+                    ],
+                  ),
+                  SizedBox(
+                    height: 28,
+                  ),
                 ],
-              ),
-              SizedBox(
-                height: 28,
               ),
               Container(
                 color: Colorconstant.mainblack,

@@ -77,208 +77,228 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // resizeToAvoidBottomInset: false,
       backgroundColor: Colorconstant.mainwhite,
       appBar: AppBar(
         backgroundColor: Colorconstant.pantonemessage,
         actions: [const Text("Version 1.0.0")],
       ),
       body: SingleChildScrollView(
-        child: Form(
-          key: _formkey,
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 10,
-              ),
-              const Text(
-                "Sign Up",
-                style: TextStyle(
-                    color: Colorconstant.darkpurple,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 40),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
-                child: TextFormField(
-                  style: TextStyle(color: Colors.black),
-                  controller: firstnamecontroller,
-                  decoration: const InputDecoration(
-                    hintText: "First name",
-                    hintStyle: TextStyle(
-                        color:
-                            Colors.black54), // Changed hint text color to black
-                    border: OutlineInputBorder(),
+        // physics: BouncingScrollPhysics(),
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Form(
+              key: _formkey,
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 10,
                   ),
-                  validator: (name) => name!.length < 3
-                      ? "Name should be at least 3 characters"
-                      : null,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
-                child: TextFormField(
-                  style: TextStyle(color: Colors.black),
-                  controller: lastnamecontroller,
-                  decoration: const InputDecoration(
-                    hintText: "Last Name",
-                    hintStyle: TextStyle(
-                        color:
-                            Colors.black54), // Changed hint text color to black
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
-                child: TextFormField(
-                    style: TextStyle(color: Colors.black),
-                    controller: phnumbercontroller,
-                    decoration: const InputDecoration(
-                      hintText: "Phone Number",
-                      hintStyle: TextStyle(
-                          color: Colors
-                              .black54), // Changed hint text color to black
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (value) {
-                      if (value != null && value.length >= 7) {
-                        return null;
-                      } else {
-                        return "Mobile number is required";
-                      }
-                    }),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
-                child: TextFormField(
-                  style: TextStyle(color: Colors.black),
-                  controller: mailidcontroller,
-                  decoration: const InputDecoration(
-                    hintText: "Email Id",
-                    hintStyle: TextStyle(
-                        color:
-                            Colors.black54), // Changed hint text color to black
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: validateEmail,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
-                child: TextFormField(
-                    style: TextStyle(color: Colors.black),
-                    controller: usernamecontroller,
-                    decoration: const InputDecoration(
-                      hintText: "User Name",
-                      hintStyle: TextStyle(
-                          color: Colors
-                              .black54), // Changed hint text color to black
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (value) {
-                      if (value != null && value.length >= 5) {
-                        return null;
-                      } else {
-                        return "Please Enter a Valid Username";
-                      }
-                    }),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
-                child: TextFormField(
-                  style: TextStyle(color: Colors.black),
-                  obscureText: passwordVisible,
-                  controller: passwordcontroller,
-                  decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            passwordVisible = !passwordVisible;
-                          });
-                        },
-                        icon: Icon(passwordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off),
-                      ),
-                      hintText: "Password",
-                      hintStyle: TextStyle(color: Colors.black54),
-                      border: OutlineInputBorder()),
-                  validator: (value) {
-                    if (value != null && value.length >= 7) {
-                      return null;
-                    } else {
-                      return "Password is Required";
-                    }
-                  },
-                  keyboardType: TextInputType.visiblePassword,
-                  textInputAction: TextInputAction.done,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 50, right: 50, bottom: 10),
-                child: TextFormField(
-                    style: TextStyle(color: Colors.black),
-                    controller: conpasswordcontroller,
-                    decoration: const InputDecoration(
-                      hintText: "Confirm Password",
-                      hintStyle: TextStyle(
-                          color: Colors
-                              .black54), // Changed hint text color to black
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (value) {
-                      if (value != null && value == passwordcontroller.text) {
-                        return null;
-                      } else {
-                        return "Password does not match";
-                      }
-                    }),
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-              ElevatedButton(
-                  style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.all(const Size(330, 50)),
-                      backgroundColor:
-                          MaterialStateProperty.all(Colorconstant.darkpurple)),
-                  onPressed: () {
-                    insertrecord();
-
-                    if (_formkey.currentState!.validate()) {
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TermsConditionsScreen()),
-                          (route) => false);
-                    }
-                  },
-                  child: const Text(
-                    "Submit",
+                  const Text(
+                    "Sign Up",
                     style: TextStyle(
-                        fontSize: 20, color: Colorconstant.pantonebackground),
-                  )),
-              const SizedBox(
-                height: 53,
-              ),
-              Container(
-                color: Colorconstant.mainblack,
-                height: 50,
-                width: double.infinity,
-                child: const Center(
-                  child: Text(
-                    "Developed by Avanzo Cyber Security Solutions",
-                    style:
-                        TextStyle(fontSize: 10, color: Colorconstant.mainwhite),
+                        color: Colorconstant.darkpurple,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 40),
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 50, right: 50, bottom: 10),
+                    child: TextFormField(
+                      style: TextStyle(color: Colors.black),
+                      controller: firstnamecontroller,
+                      decoration: const InputDecoration(
+                        hintText: "First name",
+                        hintStyle: TextStyle(
+                            color: Colors
+                                .black54), // Changed hint text color to black
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (name) => name!.length < 3
+                          ? "Name should be at least 3 characters"
+                          : null,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 50, right: 50, bottom: 10),
+                    child: TextFormField(
+                      style: TextStyle(color: Colors.black),
+                      controller: lastnamecontroller,
+                      decoration: const InputDecoration(
+                        hintText: "Last Name",
+                        hintStyle: TextStyle(
+                            color: Colors
+                                .black54), // Changed hint text color to black
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 50, right: 50, bottom: 10),
+                    child: TextFormField(
+                        style: TextStyle(color: Colors.black),
+                        controller: phnumbercontroller,
+                        decoration: const InputDecoration(
+                          hintText: "Phone Number",
+                          hintStyle: TextStyle(
+                              color: Colors
+                                  .black54), // Changed hint text color to black
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) {
+                          if (value != null && value.length >= 7) {
+                            return null;
+                          } else {
+                            return "Mobile number is required";
+                          }
+                        }),
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 50, right: 50, bottom: 10),
+                    child: TextFormField(
+                      style: TextStyle(color: Colors.black),
+                      controller: mailidcontroller,
+                      decoration: const InputDecoration(
+                        hintText: "Email Id",
+                        hintStyle: TextStyle(
+                            color: Colors
+                                .black54), // Changed hint text color to black
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: validateEmail,
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 50, right: 50, bottom: 10),
+                    child: TextFormField(
+                        style: TextStyle(color: Colors.black),
+                        controller: usernamecontroller,
+                        decoration: const InputDecoration(
+                          hintText: "User Name",
+                          hintStyle: TextStyle(
+                              color: Colors
+                                  .black54), // Changed hint text color to black
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) {
+                          if (value != null && value.length >= 5) {
+                            return null;
+                          } else {
+                            return "Please Enter a Valid Username";
+                          }
+                        }),
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 50, right: 50, bottom: 10),
+                    child: TextFormField(
+                      style: TextStyle(color: Colors.black),
+                      obscureText: passwordVisible,
+                      controller: passwordcontroller,
+                      decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                passwordVisible = !passwordVisible;
+                              });
+                            },
+                            icon: Icon(passwordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off),
+                          ),
+                          hintText: "Password",
+                          hintStyle: TextStyle(color: Colors.black54),
+                          border: OutlineInputBorder()),
+                      validator: (value) {
+                        if (value != null && value.length >= 7) {
+                          return null;
+                        } else {
+                          return "Password is Required";
+                        }
+                      },
+                      keyboardType: TextInputType.visiblePassword,
+                      textInputAction: TextInputAction.done,
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 50, right: 50, bottom: 10),
+                    child: TextFormField(
+                        style: TextStyle(color: Colors.black),
+                        controller: conpasswordcontroller,
+                        decoration: const InputDecoration(
+                          hintText: "Confirm Password",
+                          hintStyle: TextStyle(
+                              color: Colors
+                                  .black54), // Changed hint text color to black
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) {
+                          if (value != null &&
+                              value == passwordcontroller.text) {
+                            return null;
+                          } else {
+                            return "Password does not match";
+                          }
+                        }),
+                  ),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  ElevatedButton(
+                      style: ButtonStyle(
+                          fixedSize:
+                              MaterialStateProperty.all(const Size(330, 50)),
+                          backgroundColor: MaterialStateProperty.all(
+                              Colorconstant.darkpurple)),
+                      onPressed: () {
+                        insertrecord();
+
+                        if (_formkey.currentState!.validate()) {
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      TermsConditionsScreen()),
+                              (route) => false);
+                        }
+                      },
+                      child: const Text(
+                        "Submit",
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colorconstant.pantonebackground),
+                      )),
+                  const SizedBox(
+                    height: 53,
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              color: Colorconstant.mainblack,
+              height: 50,
+              width: double.infinity,
+              child: const Center(
+                child: Text(
+                  "Developed by Avanzo Cyber Security Solutions",
+                  style:
+                      TextStyle(fontSize: 10, color: Colorconstant.mainwhite),
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );

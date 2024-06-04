@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:uri_launching/utilis/color_constant/color_constant.dart';
 import 'package:uri_launching/view/login_screen/login_screen.dart';
-import 'package:uri_launching/view/terms_and_conditions_screen/terms_and_conditions_screen.dart';
 import 'package:uri_launching/view/terms_and_conditions_screen/terms_for_read.dart';
 
 class AboutCyberHulkScreen extends StatefulWidget {
