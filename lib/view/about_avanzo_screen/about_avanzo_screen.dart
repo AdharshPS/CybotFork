@@ -13,6 +13,7 @@ class _AboutAvanzoScreenState extends State<AboutAvanzoScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<int> _typewriterAnimation;
+  int _phone = 08129771111;
   final String _text1 =
       "In today’s digital data driven economy, when brands are moulded with process automation, ‘Data protection’ is of paramount importance. Avanzo now offers consultancy in Formulating security policies for corporates, Intellectual property rights (IPR) in cyberspace, Cyber forensics, Cyber Legal Audit & IS Audit for organisations and Security Audit as per ISO standards. Cyber investigation for governments and Case presentation in front of adjudication officers (India, Arbitration).";
   @override
@@ -44,11 +45,30 @@ class _AboutAvanzoScreenState extends State<AboutAvanzoScreen>
     }
   }
 
+  Future<void> _launchInBrowser(Uri url) async {
+    if (!await launchUrl(
+      url,
+      mode: LaunchMode.externalApplication,
+    )) {
+      throw Exception('Could not launch $url');
+    }
+  }
+
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final Uri toLaunch = Uri(scheme: 'https', host: 'avanzo.in');
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(height: 30),
           Center(
@@ -87,21 +107,39 @@ class _AboutAvanzoScreenState extends State<AboutAvanzoScreen>
             //   textAlign: TextAlign.justify,
             // ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          // Spacer(),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              ElevatedButton(
-                  onPressed: () {
-                    sendMailto();
-                  },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.email),
-                      SizedBox(width: 10),
-                      Text("email"),
-                    ],
-                  )),
+              TextButton(
+                onPressed: () {
+                  sendMailto();
+                },
+                style: TextButton.styleFrom(fixedSize: Size.fromHeight(10)),
+                child: Text(
+                  "email",
+                  style: TextStyle(decoration: TextDecoration.underline),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  _launchInBrowser(toLaunch);
+                },
+                child: Text(
+                  "website",
+                  style: TextStyle(decoration: TextDecoration.underline),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  _makePhoneCall(_phone.toString());
+                },
+                child: Text(
+                  "phone",
+                  style: TextStyle(decoration: TextDecoration.underline),
+                ),
+              ),
             ],
           )
         ],
