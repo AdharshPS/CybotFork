@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:uri_launching/main.dart';
 import 'package:uri_launching/utilis/color_constant/color_constant.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -64,6 +66,8 @@ class _AboutAvanzoScreenState extends State<AboutAvanzoScreen>
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     final Uri toLaunch = Uri(scheme: 'https', host: 'avanzo.in');
     return Scaffold(
       body: Column(
@@ -97,8 +101,8 @@ class _AboutAvanzoScreenState extends State<AboutAvanzoScreen>
                 return Text(
                   textToShow,
                   textAlign: TextAlign.justify,
-                  style: TextStyle(
-                      color: Colorconstant.pantonemessage, fontSize: 16.0),
+                  style:
+                      TextStyle(color: Colorconstant.mainblack, fontSize: 16.0),
                 );
               },
             ),
@@ -109,7 +113,7 @@ class _AboutAvanzoScreenState extends State<AboutAvanzoScreen>
           ),
           // Spacer(),
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
               TextButton(
@@ -119,7 +123,11 @@ class _AboutAvanzoScreenState extends State<AboutAvanzoScreen>
                 style: TextButton.styleFrom(fixedSize: Size.fromHeight(10)),
                 child: Text(
                   "email",
-                  style: TextStyle(decoration: TextDecoration.underline),
+                  style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      color: themeProvider.themeMode == ThemeMode.light
+                          ? Colorconstant.mainblack
+                          : Colorconstant.mainwhite),
                 ),
               ),
               TextButton(
@@ -128,7 +136,9 @@ class _AboutAvanzoScreenState extends State<AboutAvanzoScreen>
                 },
                 child: Text(
                   "website",
-                  style: TextStyle(decoration: TextDecoration.underline),
+                  style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      color: Colorconstant.mainblack),
                 ),
               ),
               TextButton(
@@ -137,7 +147,9 @@ class _AboutAvanzoScreenState extends State<AboutAvanzoScreen>
                 },
                 child: Text(
                   "phone",
-                  style: TextStyle(decoration: TextDecoration.underline),
+                  style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      color: Colorconstant.mainblack),
                 ),
               ),
             ],

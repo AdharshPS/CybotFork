@@ -8,4 +8,8 @@ class Colorconstant {
   static const Color mainwhite = Colors.white;
   static const Color hulkgreen = Color(0xff66ff00);
   static const Color hulkgreen2 = Color(0xff008000);
+
+  // static const Color darkpurple = Color(0xFF4e8a40);
+  // static const Color pantonemessage = Color(0xFF74BF63);
+  // static const Color pantonebackground = Color(0xff008000);
 }

@@ -5,9 +5,7 @@ import 'package:uri_launching/view/about_avanzo_screen/about_avanzo_screen.dart'
 import 'package:uri_launching/view/about_cyberhulk_screen/about_cyberhulk_screen.dart';
 import 'package:uri_launching/view/dashborad_screen/dashboard_screen.dart';
 import 'package:uri_launching/view/home_screen/home_screen.dart';
-import 'package:uri_launching/view/login_screen/login_screen.dart';
 import 'package:uri_launching/view/news_screen/news_screen.dart';
-import 'package:uri_launching/view/signup_screen/signup_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BottomNavigationScreen extends StatefulWidget {
@@ -76,7 +74,13 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
           BottomNavigationBarItem(
               icon: Icon(Icons.search), label: "Ask Question"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.animation_outlined), label: "Cyberhulk"),
+              icon: ImageIcon(
+                AssetImage(
+                  "assets/images/CyberHULK Logo final small.png",
+                ),
+                size: 40,
+              ),
+              label: "Cyberhulk"),
           BottomNavigationBarItem(
               icon: ImageIcon(
                 AssetImage(
@@ -86,7 +90,13 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
               ),
               label: "News"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.account_tree), label: "Avanzo"),
+              icon: ImageIcon(
+                AssetImage(
+                  "assets/images/avzlogo.png",
+                ),
+                size: 28,
+              ),
+              label: "Avanzo"),
         ],
       ),
     );

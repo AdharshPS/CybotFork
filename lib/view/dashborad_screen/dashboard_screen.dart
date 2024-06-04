@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:provider/provider.dart';
 import 'package:uri_launching/controller/suggestion_list/suggestion_list.dart';
+import 'package:uri_launching/main.dart';
 import 'package:uri_launching/utilis/color_constant/color_constant.dart';
 import 'package:http/http.dart' as http;
 import 'package:speech_to_text/speech_to_text.dart' as stt;
@@ -73,24 +75,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 10),
-            Image.asset("assets/images/avzlogo.png", height: 100),
-            SizedBox(height: 18),
-            Center(
-              child: Text(
-                "CYBERHULK",
-                style: TextStyle(
-                  color: Colorconstant.darkpurple,
-                  fontSize: 35,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
+            SizedBox(height: 30),
+            Image.asset(
+                themeProvider.themeMode == ThemeMode.dark
+                    ? "assets/images/CyberHULK Logo final-07.png"
+                    : "assets/images/CyberHULK Logo final-06.png",
+                fit: BoxFit.fitHeight,
+                height: 150),
+            // Center(
+            //   child: Text(
+            //     "CYBERHULK",
+            //     style: TextStyle(
+            //       color: Colorconstant.darkpurple,
+            //       fontSize: 35,
+            //       fontWeight: FontWeight.w900,
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
               child: TypeAheadField(
@@ -136,7 +144,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 "Ask",
                 style: TextStyle(
                   fontSize: 25,
-                  color: Colorconstant.pantonemessage,
+                  color: Colorconstant.mainwhite,
                 ),
               ),
             ),

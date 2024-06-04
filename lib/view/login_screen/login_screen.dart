@@ -139,8 +139,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 30,
                   ),
                   Image.asset(
-                    "assets/images/avzlogo.png",
-                    height: 100,
+                    "assets/images/CyberHULK Logo final-06.png",
+                    height: 200,
                   ),
                   Text(
                     "WELCOME",

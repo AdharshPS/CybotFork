@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uri_launching/main.dart';
+import 'package:uri_launching/utilis/color_constant/color_constant.dart';
 
 class ThemeSwitch extends StatelessWidget {
   @override
@@ -18,6 +19,8 @@ class ThemeSwitch extends StatelessWidget {
         //       : Colors.grey,
         // ),
         Switch(
+          inactiveThumbColor: Colorconstant.pantonemessage,
+          activeColor: Colorconstant.pantonebackground,
           value: themeProvider.themeMode == ThemeMode.dark,
           onChanged: (value) {
             themeProvider.toggleTheme(value);
@@ -28,7 +31,7 @@ class ThemeSwitch extends StatelessWidget {
               ? Icons.nights_stay
               : Icons.wb_sunny,
           color: themeProvider.themeMode == ThemeMode.dark
-              ? Colors.grey
+              ? Colorconstant.mainblack
               : Colors.yellow,
         ),
       ],

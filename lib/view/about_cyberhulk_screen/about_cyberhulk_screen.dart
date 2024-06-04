@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:provider/provider.dart';
+import 'package:uri_launching/main.dart';
 import 'package:uri_launching/utilis/color_constant/color_constant.dart';
 import 'package:uri_launching/view/login_screen/login_screen.dart';
 import 'package:uri_launching/view/terms_and_conditions_screen/terms_for_read.dart';
@@ -61,16 +63,25 @@ class _AboutCyberHulkScreenState extends State<AboutCyberHulkScreen>
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text("CyberHulk"),
-        centerTitle: true,
-      ),
+      // appBar: AppBar(
+      //   title: Text("CyberHulk"),
+      //   centerTitle: true,
+      // ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
+              Image.asset(
+                  themeProvider.themeMode == ThemeMode.dark
+                      ? "assets/images/CyberHULK Logo final-07.png"
+                      : "assets/images/CyberHULK Logo final-06.png",
+                  fit: BoxFit.fitHeight,
+                  height: 150),
+              SizedBox(height: 10),
               AnimatedBuilder(
                 animation: _typewriterAnimation,
                 builder: (context, child) {
@@ -84,29 +95,40 @@ class _AboutCyberHulkScreenState extends State<AboutCyberHulkScreen>
                     textToShow,
                     textAlign: TextAlign.justify,
                     style: TextStyle(
-                        color: Colorconstant.pantonemessage, fontSize: 16.0),
+                        color: themeProvider.themeMode == ThemeMode.light
+                            ? Colorconstant.mainblack
+                            : Colorconstant.mainwhite,
+                        fontSize: 16.0),
                   );
                 },
               ),
               TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Termsforread()));
-                  },
-                  child: Text("Terms and conditions")),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Termsforread()));
+                },
+                child: Text(
+                  "Terms and conditions",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Colorconstant.darkpurple),
+                ),
+              ),
               SizedBox(
                 height: 25,
               ),
               OutlinedButton(
                 style: ButtonStyle(
                   side: MaterialStateProperty.all(
-                    BorderSide(color: Colorconstant.pantonebackground),
+                    BorderSide(color: Colorconstant.darkpurple),
                   ),
                 ),
                 onPressed: logout,
-                child: Text("Logout"),
+                child: Text(
+                  "Logout",
+                  style: TextStyle(color: Colorconstant.darkpurple),
+                ),
               )
             ],
           ),

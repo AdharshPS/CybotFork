@@ -33,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colorconstant.pantonemessage,
+      backgroundColor: Colorconstant.mainwhite,
       appBar: AppBar(
         backgroundColor: Colorconstant.pantonemessage,
         actions: [Text("Version 1.0.0")],
@@ -50,32 +50,18 @@ class _SplashScreenState extends State<SplashScreen> {
       //   ],
       // ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 100),
+        padding: const EdgeInsets.only(top: 200),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              children: [
-                Center(
-                    child: Image.asset(
-                  "assets/images/avzlogo.png",
-                  height: 200,
-                )),
-                SizedBox(
-                  height: 20,
+            Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Center(
+                child: Image.asset(
+                  "assets/images/CyberHULK Logo final-06.png",
+                  height: 250,
                 ),
-                Text(
-                  "CYBERHULK",
-                  style: TextStyle(
-                      color: Colorconstant.mainblack,
-                      fontSize: 50,
-                      fontWeight: FontWeight.w600),
-                ),
-                SizedBox(
-                  height: 270,
-                ),
-              ],
-            ),
+              ),
+            ]),
             Container(
               color: Colorconstant.mainblack,
               height: 50,
