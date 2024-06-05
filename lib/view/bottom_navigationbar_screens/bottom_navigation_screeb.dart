@@ -21,8 +21,8 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   List screens = [
     HomeScreen(),
     DashboardScreen(),
-    AboutCyberHulkScreen(),
     NewsScreen(),
+    AboutCyberHulkScreen(),
     AboutAvanzoScreen(),
   ];
 
@@ -53,10 +53,10 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
           )
         ],
       ),
-      body: indexnum == 3 ? Container() : screens[indexnum],
+      body: indexnum == 2 ? Container() : screens[indexnum],
       bottomNavigationBar: BottomNavigationBar(
         onTap: (value) {
-          if (value == 3) {
+          if (value == 2) {
             _launchUrl();
           } else {
             setState(() {
@@ -76,19 +76,19 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
           BottomNavigationBarItem(
               icon: ImageIcon(
                 AssetImage(
-                  "assets/images/CyberHULK Logo final small.png",
-                ),
-                size: 40,
-              ),
-              label: "Cyberhulk"),
-          BottomNavigationBarItem(
-              icon: ImageIcon(
-                AssetImage(
                   "assets/images/Animation - 1717225115801 (1).gif",
                 ),
                 size: 50,
               ),
               label: "News"),
+          BottomNavigationBarItem(
+              icon: ImageIcon(
+                AssetImage(
+                  "assets/images/CyberHULK Logo final small.png",
+                ),
+                size: 40,
+              ),
+              label: "Cyberhulk"),
           BottomNavigationBarItem(
               icon: ImageIcon(
                 AssetImage(

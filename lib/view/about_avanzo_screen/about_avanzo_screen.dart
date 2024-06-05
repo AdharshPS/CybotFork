@@ -78,6 +78,9 @@ class _AboutAvanzoScreenState extends State<AboutAvanzoScreen>
           Center(
             child: Image.asset(
               "assets/images/avzlogo.png",
+              color: themeProvider.themeMode == ThemeMode.light
+                  ? Colorconstant.mainblack
+                  : Colorconstant.mainwhite,
               height: 100,
             ),
           ),
@@ -101,8 +104,11 @@ class _AboutAvanzoScreenState extends State<AboutAvanzoScreen>
                 return Text(
                   textToShow,
                   textAlign: TextAlign.justify,
-                  style:
-                      TextStyle(color: Colorconstant.mainblack, fontSize: 16.0),
+                  style: TextStyle(
+                      color: themeProvider.themeMode == ThemeMode.light
+                          ? Colorconstant.mainblack
+                          : Colorconstant.mainwhite,
+                      fontSize: 16.0),
                 );
               },
             ),
@@ -138,7 +144,9 @@ class _AboutAvanzoScreenState extends State<AboutAvanzoScreen>
                   "website",
                   style: TextStyle(
                       decoration: TextDecoration.underline,
-                      color: Colorconstant.mainblack),
+                      color: themeProvider.themeMode == ThemeMode.light
+                          ? Colorconstant.mainblack
+                          : Colorconstant.mainwhite),
                 ),
               ),
               TextButton(
@@ -149,7 +157,9 @@ class _AboutAvanzoScreenState extends State<AboutAvanzoScreen>
                   "phone",
                   style: TextStyle(
                       decoration: TextDecoration.underline,
-                      color: Colorconstant.mainblack),
+                      color: themeProvider.themeMode == ThemeMode.light
+                          ? Colorconstant.mainblack
+                          : Colorconstant.mainwhite),
                 ),
               ),
             ],
